@@ -11,7 +11,7 @@ public enum MeasureEnum {
     OWASPTOP10_MAJOR("owaspTop10Major"), OWASPTOP10_MINOR("owaspTop10Minor"), OWASPTOP10_INFO("owaspTop10Info");
     private String label;
 
-    private MeasureEnum(String label) {
+    MeasureEnum(String label) {
 	this.label = label;
     }
 

@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true, fluent = false)
-public class IssueModel {
+public class IssueDTO {
     private String ruleName;
     private String key;
     private String ruleKey;

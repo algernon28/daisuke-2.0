@@ -1,21 +1,19 @@
 package com.daisuke.domain.model;
 
+import java.math.BigDecimal;
 import java.util.EnumMap;
-
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Accessors(chain = true, fluent = false)
-public class ComponentModel {
+@Accessors(fluent = false, chain = true)
+public class ComponentDTO {
     @NonNull
     private String key;
     private String organization;
@@ -29,17 +27,13 @@ public class ComponentModel {
     private String analisysDate;
     private String language;
     private int linesOfCode;
-    private double codeQualityIndex;
-    private EnumMap<MeasureKey, Measure> measures;
+    private BigDecimal codeQualityIndex;
+    private EnumMap<MeasureEnum, Measure> measures;
 
-    @Setter(value = AccessLevel.NONE)
-    public enum MeasureKey {
 
-    }
-
-    public ComponentModel putMeasure(MeasureKey key, Measure measure) {
+    public ComponentDTO addMeasure(MeasureEnum key, Measure measure) {
 	if (measures == null) {
-	    measures = new EnumMap<>(MeasureKey.class);
+	    measures = new EnumMap<>(MeasureEnum.class);
 	}
 	measures.put(key, measure);
 	return this;
@@ -54,4 +48,5 @@ public class ComponentModel {
 	private float effort;
 	private Long numIssues;
     }
+    
 }

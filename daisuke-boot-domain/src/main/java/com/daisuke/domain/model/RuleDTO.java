@@ -8,8 +8,8 @@ import lombok.experimental.Accessors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true, fluent = false)
-public class RuleModel {
+@Accessors(fluent = false, chain = true)
+public class RuleDTO {
     private String key;
     private String description;
     private TypeEnum type;
