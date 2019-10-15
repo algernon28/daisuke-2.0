@@ -1,0 +1,8 @@
+server.port: 7007
+daisuke:
+  server-type: SonarQube
+  analysis-server: 
+    url: http://213.254.15.77:9000/
+    token: b54848047bb6c95c352fbc1f1704370fe1bb2d98
+  output:
+    path: D:/temp/myFile.csv

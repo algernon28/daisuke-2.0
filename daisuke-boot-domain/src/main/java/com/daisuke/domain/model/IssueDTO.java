@@ -7,12 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-
 @Component
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true, fluent = false)
+@Accessors(fluent = false, chain = true)
 public class IssueDTO {
     private String ruleName;
     private String key;

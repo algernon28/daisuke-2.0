@@ -18,6 +18,7 @@
 	<modules>
 		<module>daisuke-boot-domain</module>
 		<module>daisuke-boot-jpa</module>
+		<module>daisuke-boot-application</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

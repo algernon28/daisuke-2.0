@@ -22,4 +22,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<version>1.0</version>
+	<groupId>com.daisuke.boot.domain</groupId>
 </project>

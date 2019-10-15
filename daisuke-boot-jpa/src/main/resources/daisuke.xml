@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service>
+    <id>daisuke</id>
+    <name>Daisuke Windows Service</name>
+	<env name="HOME" value="D:/SONAR_UTILITY/daisuke/"/>
+	<logpath>./logs</logpath>
+    <description>Daisuke Windows Service</description>
+    <executable>java</executable>
+    <arguments>-Xrs -Xmx256m -jar "daisuke.jar" --spring.config.location=%HOME%/ --spring.profiles.active=edison</arguments>
+    <logmode>rotate</logmode>
+</service>

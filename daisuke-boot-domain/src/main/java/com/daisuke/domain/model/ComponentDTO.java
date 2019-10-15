@@ -39,7 +39,7 @@ public class ComponentDTO {
 	return this;
     }
 
-    @Data
+    @Data 
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Measure {
