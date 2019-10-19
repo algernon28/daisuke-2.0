@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 public class GenericJpaDAO<T extends Serializable> {
 
     private Class<T> clazz;
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     protected GenericJpaDAO() {
     }
@@ -17,7 +17,7 @@ public class GenericJpaDAO<T extends Serializable> {
     @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
 	this.entityManager = entityManager;
-    };
+    }
 
     public final void setClazz(final Class<T> clazzToSet) {
 	this.clazz = clazzToSet;

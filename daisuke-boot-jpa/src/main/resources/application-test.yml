@@ -2,7 +2,7 @@ server.port: 7007
 daisuke:
   server-type: SonarQube
   analysis-server: 
-    url: http://codereview.edison.it/sonarqube
+    url: http://localhost:9000/sonarqube
     token: e65a3a0ab2e015a069765ea6553f54925ae4d374
   output:
     path: D:/temp/myFile.csv

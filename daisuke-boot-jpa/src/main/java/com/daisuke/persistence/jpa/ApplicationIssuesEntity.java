@@ -1,9 +1,11 @@
 package com.daisuke.persistence.jpa;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,72 +40,88 @@ public class ApplicationIssuesEntity implements Serializable {
     @Column(name = "COMPONENT_LOC")
     private Integer linesOfCode;
 
-    @Data
-    @NoArgsConstructor
-    @Accessors(chain = true)
-    public static class ReliabilityData {
-	@Column(name = "BUG_BLOCKER")
-	private BigInteger blocker;
-	@Column(name = "BUG_CRITICAL")
-	private BigInteger critical;
-	@Column(name = "BUG_MAJOR")
-	private BigInteger major;
-	@Column(name = "BUG_MINOR")
-	private BigInteger minor;
-	@Column(name = "BUG_INFO")
-	private BigInteger info;
-    }
+    @Embedded
+    @AttributeOverride(name = "blocker", column = @Column(name = "BUG_BLOCKER"))
+    @AttributeOverride(name = "critical", column = @Column(name = "BUG_CRITICAL"))
+    @AttributeOverride(name = "major", column = @Column(name = "BUG_MAJOR"))
+    @AttributeOverride(name = "minor", column = @Column(name = "BUG_MINOR"))
+    @AttributeOverride(name = "info", column = @Column(name = "BUG_INFO"))
+    private ReliabilityData bugs;
+    @Embedded
+    @AttributeOverride(name = "blocker", column = @Column(name = "VULNERABILITY_BLOCKER"))
+    @AttributeOverride(name = "critical", column = @Column(name = "VULNERABILITY_CRITICAL"))
+    @AttributeOverride(name = "major", column = @Column(name = "VULNERABILITY_MAJOR"))
+    @AttributeOverride(name = "minor", column = @Column(name = "VULNERABILITY_MINOR"))
+    @AttributeOverride(name = "info", column = @Column(name = "VULNERABILITY_INFO"))
+    private VulnerabilityData vulnerabilities;
+    @Embedded
+    @AttributeOverride(name = "blocker", column = @Column(name = "MAINTAINABILITY_BLOCKER"))
+    @AttributeOverride(name = "critical", column = @Column(name = "MAINTAINABILITY_CRITICAL"))
+    @AttributeOverride(name = "major", column = @Column(name = "MAINTAINABILITY_MAJOR"))
+    @AttributeOverride(name = "minor", column = @Column(name = "MAINTAINABILITY_MINOR"))
+    @AttributeOverride(name = "info", column = @Column(name = "MAINTAINABILITY_INFO"))
+    private MaintainabilityData codeSmells;
 
-    @Data
-    @NoArgsConstructor
-    @Accessors(chain = true)
-    public static class VulnerabilityData {
-	@Column(name = "VULNERABILITY_BLOCKER")
-	private BigInteger blocker;
-	@Column(name = "VULNERABILITY_CRITICAL")
-	private BigInteger critical;
-	@Column(name = "VULNERABILITY_MAJOR")
-	private BigInteger major;
-	@Column(name = "VULNERABILITY_MINOR")
-	private BigInteger minor;
-	@Column(name = "VULNERABILITY_INFO")
-	private BigInteger info;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @Accessors(chain = true)
-    public static class MaintainabilityData {
-	@Column(name = "MAINTAINABILITY_BLOCKER")
-	private BigInteger blocker;
-	@Column(name = "MAINTAINABILITY_CRITICAL")
-	private BigInteger critical;
-	@Column(name = "MAINTAINABILITY_MAJOR")
-	private BigInteger major;
-	@Column(name = "MAINTAINABILITY_MINOR")
-	private BigInteger minor;
-	@Column(name = "MAINTAINABILITY_INFO")
-	private BigInteger info;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @Accessors(chain = true)
-    public static class OwaspTop10 {
-	@Column(name = "OWASP_BLOCKER")
-	private BigInteger blocker;
-	@Column(name = "OWASP_CRITICAL")
-	private BigInteger critical;
-	@Column(name = "OWASP_MAJOR")
-	private BigInteger major;
-	@Column(name = "OWASP_MINOR")
-	private BigInteger minor;
-	@Column(name = "OWASP_INFO")
-	private BigInteger info;
-    }
+    @Embedded
+    @AttributeOverride(name = "blocker", column = @Column(name = "OWASP_BLOCKER"))
+    @AttributeOverride(name = "critical", column = @Column(name = "OWASP_CRITICAL"))
+    @AttributeOverride(name = "major", column = @Column(name = "OWASP_MAJOR"))
+    @AttributeOverride(name = "minor", column = @Column(name = "OWASP_MINOR"))
+    @AttributeOverride(name = "info", column = @Column(name = "OWASP_INFO"))
+    private OwaspTop10 owaspTop10;
 
     @Column(name = "DT_INSERT", insertable = false, updatable = false)
     @Temporal(value = TemporalType.DATE)
     private java.util.Date date;
 
+    @Data
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Embeddable
+    public static class ReliabilityData implements Serializable {
+	private static final long serialVersionUID = 7523715489799053196L;
+	private Integer blocker;
+	private Integer critical;
+	private Integer major;
+	private Integer minor;
+	private Integer info;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Embeddable
+    public static class VulnerabilityData implements Serializable {
+	private static final long serialVersionUID = -9104190399310505307L;
+	private Integer blocker;
+	private Integer critical;
+	private Integer major;
+	private Integer minor;
+	private Integer info;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Embeddable
+    public static class MaintainabilityData implements Serializable {
+	private static final long serialVersionUID = -441331599282786010L;
+	private Integer blocker;
+	private Integer critical;
+	private Integer major;
+	private Integer minor;
+	private Integer info;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    public static class OwaspTop10 implements Serializable {
+	private static final long serialVersionUID = -444193283679563898L;
+	private Integer blocker;
+	private Integer critical;
+	private Integer major;
+	private Integer minor;
+	private Integer info;
+    }
 }

@@ -17,7 +17,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import lombok.extern.slf4j.Slf4j;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.daisuke.application, com.daisuke.persistence.jpa")
 @Slf4j
 public class DaisukeApplication implements ApplicationRunner {
     private static final String USAGE = "usage: java  -jar ./app.jar --spring.config.location=file://<path>/myfile.yml";
