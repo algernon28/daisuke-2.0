@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
+	version="2.1">
+	<package>com.daisuke.domain.model</package>
+	<entity class="com.daisuke.domain.model.ComponentDTO">
+		<table name="APPLICATION_ISSUES" />
+		<attributes>
+			<id name="id">
+				<column name="ID" />
+				<generated-value strategy="IDENTITY" />
+			</id>
+			<basic name="value">
+				<column name="COMPONENT_NAME" />
+			</basic>
+			<basic name="value">
+				<column name="COMPONENT_QUALIFIER" />
+			</basic>
+			<basic name="value">
+				<column name="COMPONENT_KEY" />
+			</basic>
+			<basic name="value">
+				<column name="COMPONENT_LOC" />
+			</basic>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="BUG_BLOCKER" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="BUG_CRITICAL" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="BUG_MAJOR" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="BUG_MINOR" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="BUG_INFO" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="VULNERABILITY_BLOCKER" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="VULNERABILITY_CRITICAL" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="VULNERABILITY_MAJOR" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="VULNERABILITY_MINOR" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="VULNERABILITY_INFO" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="MAINTAINABILITY_BLOCKER" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="MAINTAINABILITY_CRITICAL" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="MAINTAINABILITY_MAJOR" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="MAINTAINABILITY_MINOR" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="MAINTAINABILITY_INFO" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="OWASP_BLOCKER" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="OWASP_CRITICAL" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="OWASP_MAJOR" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="OWASP_MINOR" />
+				</attribute-override>
+			</embedded>
+			<embedded name="measures">
+				<attribute-override name="">
+					<column name="OWASP_INFO" />
+				</attribute-override>
+			</embedded>
+		</attributes>
+	</entity>
+</entity-mappings>

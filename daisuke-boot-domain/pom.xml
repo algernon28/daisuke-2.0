@@ -8,6 +8,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>daisuke-boot-domain</artifactId>
+	<version>1.0</version>
 	<name>daisuke-boot-domain</name>
 	<description>Daisuke Domain</description>
 	<dependencies>
