@@ -1,0 +1,1 @@
+package com.daisuke.persistence.jpa.config;
