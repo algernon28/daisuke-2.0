@@ -12,6 +12,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationIssuesEn
 
     @Query("SELECT ai FROM ApplicationIssuesEntity ai WHERE ai.key = (:pKey)")
     List<ApplicationIssuesEntity> findByKey(@Param("pKey") String key);
+
     @Query("SELECT ai FROM ApplicationIssuesEntity ai WHERE ai.name = (:pName)")
     List<ApplicationIssuesEntity> findByName(@Param("pName") String name);
 }

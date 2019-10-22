@@ -13,6 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.ComponentScans;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
@@ -40,7 +44,6 @@ class ApplicationIssuesEntityTest {
     @Autowired
     ApplicationRepository repository;
 
-    
     @BeforeAll
     void setUpBeforeClass() throws Exception {
     }
@@ -117,7 +120,7 @@ class ApplicationIssuesEntityTest {
 	log.debug("Entity name: {}, key: {}, id: {}", actual.getName(), actual.getKey(), actual.getId());
 	repository.deleteById(id);
 	assertThat(repository.findById(id)).isEmpty();
-	assertThat(repository.count()).isEqualTo(2);	
+	assertThat(repository.count()).isEqualTo(2);
     }
 
 }

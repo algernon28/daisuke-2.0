@@ -1,13 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.daisuke.boot</groupId>
 		<artifactId>daisuke-boot-jdk11</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.9</version>
 	</parent>
-	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.daisuke.boot.application</groupId>
 	<artifactId>daisuke-boot-application</artifactId>
+	<version>1.0</version>
+	<name>daisuke-boot-domain</name>
 	<description>Daisuke Application</description>
 	<dependencies>
 		<dependency>
@@ -23,6 +26,11 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.daisuke.boot.jpa</groupId>
+			<artifactId>daisuke-boot-jpa</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -37,20 +45,4 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<version>1.0</version>
-	<groupId>com.daisuke.boot.application</groupId>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.daisuke.boot.jpa</groupId>
-				<artifactId>daisuke-boot-jpa</artifactId>
-				<version>1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.daisuke.boot.domain</groupId>
-				<artifactId>daisuke-boot-domain</artifactId>
-				<version>1.0</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 </project>

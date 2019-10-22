@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "daisuke",
+  "type": "com.daisuke.integration.config.ConfigurationBean",
+  "description": "Daisuke SonarQube adapter configuration'"
+}]}
