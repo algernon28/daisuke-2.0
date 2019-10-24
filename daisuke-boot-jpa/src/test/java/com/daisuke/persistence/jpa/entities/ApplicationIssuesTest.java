@@ -1,4 +1,4 @@
-package com.daisuke.persistence.jpa;
+package com.daisuke.persistence.jpa.entities;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,18 +13,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.ComponentScans;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import com.daisuke.persistence.jpa.ApplicationIssuesEntity.MaintainabilityData;
-import com.daisuke.persistence.jpa.ApplicationIssuesEntity.ReliabilityData;
-import com.daisuke.persistence.jpa.ApplicationIssuesEntity.VulnerabilityData;
+import com.daisuke.persistence.jpa.entities.ApplicationIssues.MaintainabilityData;
+import com.daisuke.persistence.jpa.entities.ApplicationIssues.ReliabilityData;
+import com.daisuke.persistence.jpa.entities.ApplicationIssues.VulnerabilityData;
 import com.daisuke.persistence.jpa.repositories.ApplicationRepository;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -36,11 +32,12 @@ import lombok.extern.slf4j.Slf4j;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
 	TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class })
-@DatabaseSetup("/META-INF/dbtest/applications-data.xml")
+@DatabaseSetup("classpath:"
+	+ "dbtest/applications-data.xml")
 @Slf4j
-class ApplicationIssuesEntityTest {
+class ApplicationIssuesTest {
 
-    private ApplicationIssuesEntity testEntity;
+    private ApplicationIssues testEntity;
     @Autowired
     ApplicationRepository repository;
 
@@ -55,7 +52,7 @@ class ApplicationIssuesEntityTest {
 		.setMinor(412).setInfo(9);
 	MaintainabilityData codeSmells = new MaintainabilityData().setBlocker(1999).setCritical(7421).setMajor(117000)
 		.setMinor(9444).setInfo(145112);
-	testEntity = new ApplicationIssuesEntity().setId(113).setKey("fooKey").setName("Mickey Mouse")
+	testEntity = new ApplicationIssues().setId(113).setKey("fooKey").setName("Mickey Mouse")
 		.setLinesOfCode(1130000).setQualifier("VW").setBugs(bugs).setVulnerabilities(vulnerabilities)
 		.setCodeSmells(codeSmells);
     }
@@ -66,15 +63,15 @@ class ApplicationIssuesEntityTest {
 
     @Test
     void checkSetup() {
-	List<ApplicationIssuesEntity> entities = repository.findAll();
+	List<ApplicationIssues> entities = repository.findAll();
 	assertThat(entities).isNotEmpty();
     }
 
     @Test
     void testFindOne() {
-	List<ApplicationIssuesEntity> list = repository.findByKey("k2");
+	List<ApplicationIssues> list = repository.findByKey("k2");
 	assertThat(list).isNotEmpty();
-	ApplicationIssuesEntity actual = list.get(0);
+	ApplicationIssues actual = list.get(0);
 	assertThat(actual).isNotNull();
 	assertThat(actual.getName()).isEqualTo("two");
 	assertThat(actual.getOwaspTop10().getMajor()).isEqualTo(21);
@@ -82,7 +79,7 @@ class ApplicationIssuesEntityTest {
 
     @Test
     void testFindAll() {
-	List<ApplicationIssuesEntity> actual = repository.findAll();
+	List<ApplicationIssues> actual = repository.findAll();
 	assertThat(actual).isNotEmpty();
 	assertThat(actual.size()).isEqualTo(3);
     }
@@ -90,7 +87,7 @@ class ApplicationIssuesEntityTest {
     @Test
     void testCreate() {
 	repository.save(testEntity);
-	ApplicationIssuesEntity actual = repository.findByKey("fooKey").get(0);
+	ApplicationIssues actual = repository.findByKey("fooKey").get(0);
 	assertThat(actual).isNotNull();
 	assertThat(actual).isEqualTo(testEntity);
 	assertThat(repository.count()).isEqualTo(4);
@@ -98,7 +95,7 @@ class ApplicationIssuesEntityTest {
 
     @Test
     void testUpdate() {
-	ApplicationIssuesEntity actual = repository.findByKey("k2").get(0);
+	ApplicationIssues actual = repository.findByKey("k2").get(0);
 	assertThat(repository.findByKey("k2").get(0).getBugs().getBlocker()).isEqualTo(12);
 	actual.setBugs(new ReliabilityData().setBlocker(999));
 	repository.save(actual);
@@ -107,7 +104,7 @@ class ApplicationIssuesEntityTest {
 
     @Test
     void testDelete() {
-	ApplicationIssuesEntity actual = repository.findByKey("k2").get(0);
+	ApplicationIssues actual = repository.findByKey("k2").get(0);
 	repository.delete(actual);
 	assertThat(repository.findByKey("k2")).isEmpty();
 	assertThat(repository.count()).isEqualTo(2);
@@ -115,7 +112,7 @@ class ApplicationIssuesEntityTest {
 
     @Test
     void testDeleteById() {
-	ApplicationIssuesEntity actual = repository.findByKey("k1").get(0);
+	ApplicationIssues actual = repository.findByKey("k1").get(0);
 	Integer id = actual.getId();
 	log.debug("Entity name: {}, key: {}, id: {}", actual.getName(), actual.getKey(), actual.getId());
 	repository.deleteById(id);

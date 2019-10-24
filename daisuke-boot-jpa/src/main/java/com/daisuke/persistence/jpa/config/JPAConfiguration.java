@@ -1,4 +1,4 @@
-package com.daisuke.persistence.jpa.configuration;
+package com.daisuke.persistence.jpa.config;
 
 import javax.persistence.EntityManagerFactory;
 

@@ -1,4 +1,4 @@
-package com.daisuke.persistence.jpa;
+package com.daisuke.persistence.jpa.entities;
 
 import java.io.Serializable;
 
@@ -24,7 +24,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Data
 @Accessors(chain = true)
-public class ApplicationIssuesEntity implements Serializable {
+public class ApplicationIssues implements Serializable {
     private static final long serialVersionUID = -2222016595512253787L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

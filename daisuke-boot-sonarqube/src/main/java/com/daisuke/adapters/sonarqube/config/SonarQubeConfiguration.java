@@ -2,6 +2,7 @@ package com.daisuke.adapters.sonarqube.config;
 
 import java.net.URL;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.lang.NonNull;
@@ -29,7 +30,4 @@ public class SonarQubeConfiguration {
 	@NonNull
 	private String token;
     }
-    
-    
-
 }

@@ -14,7 +14,6 @@ import org.sonarqube.ws.client.measures.MeasuresService;
 import org.sonarqube.ws.client.rules.RulesService;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-
 import com.daisuke.adapters.sonarqube.config.SonarQubeConfiguration;
 
 import lombok.Getter;
@@ -45,6 +44,13 @@ public class SonarQubeClient {
 	this.componentsService = wsClient.components();
 	this.measuresService = wsClient.measures();
     }
+    
+    /**
+     * Perform the login
+     */
+    public void login() {
+	authService.login(loginRequest);
+    }
 
     private boolean credentialsStillValid() throws JSONException {
 	boolean result = false;
@@ -66,7 +72,7 @@ public class SonarQubeClient {
 	    throw new ServiceResponseException("Error while parsing Login response");
 	}
 	if (shouldLogin) {
-	    authService.login(loginRequest);
+	    login();
 	}
     }
 
