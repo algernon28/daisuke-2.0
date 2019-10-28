@@ -47,6 +47,7 @@ public class ApplicationIssues implements Serializable {
     @AttributeOverride(name = "minor", column = @Column(name = "BUG_MINOR"))
     @AttributeOverride(name = "info", column = @Column(name = "BUG_INFO"))
     private ReliabilityData bugs;
+
     @Embedded
     @AttributeOverride(name = "blocker", column = @Column(name = "VULNERABILITY_BLOCKER"))
     @AttributeOverride(name = "critical", column = @Column(name = "VULNERABILITY_CRITICAL"))
@@ -54,6 +55,7 @@ public class ApplicationIssues implements Serializable {
     @AttributeOverride(name = "minor", column = @Column(name = "VULNERABILITY_MINOR"))
     @AttributeOverride(name = "info", column = @Column(name = "VULNERABILITY_INFO"))
     private VulnerabilityData vulnerabilities;
+
     @Embedded
     @AttributeOverride(name = "blocker", column = @Column(name = "MAINTAINABILITY_BLOCKER"))
     @AttributeOverride(name = "critical", column = @Column(name = "MAINTAINABILITY_CRITICAL"))

@@ -130,6 +130,9 @@
 						<compilerArg>
 							-Amapstruct.suppressGeneratorVersionInfoComment=true
 						</compilerArg>
+						<compilerArg>
+							-Amapstruct.defaultComponentModel=spring
+						</compilerArg>
 					</compilerArgs>
 				</configuration>
 			</plugin>

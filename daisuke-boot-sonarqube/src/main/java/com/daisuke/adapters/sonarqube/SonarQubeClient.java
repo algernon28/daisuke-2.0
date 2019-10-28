@@ -14,7 +14,9 @@ import org.sonarqube.ws.client.measures.MeasuresService;
 import org.sonarqube.ws.client.rules.RulesService;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+
 import com.daisuke.adapters.sonarqube.config.SonarQubeConfiguration;
+import com.daisuke.domain.adapters.SearchException;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +46,7 @@ public class SonarQubeClient {
 	this.componentsService = wsClient.components();
 	this.measuresService = wsClient.measures();
     }
-    
+
     /**
      * Perform the login
      */
@@ -62,14 +64,16 @@ public class SonarQubeClient {
 
     /**
      * Re-authenticate if the login session has expired
+     * 
+     * @throws SearchException
      */
-    public void refreshConnection() {
+    public void refreshConnection() throws SearchException {
 	boolean shouldLogin = false;
 	try {
 	    shouldLogin = !credentialsStillValid();
 	} catch (JSONException e) {
 	    log.debug(e.getMessage(), e);
-	    throw new ServiceResponseException("Error while parsing Login response");
+	    throw new SearchException("Error while parsing Login response");
 	}
 	if (shouldLogin) {
 	    login();
