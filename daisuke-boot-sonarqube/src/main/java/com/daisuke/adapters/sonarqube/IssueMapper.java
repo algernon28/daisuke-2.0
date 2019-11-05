@@ -13,8 +13,8 @@ import com.daisuke.domain.model.IssueDTO;
 @Mapper
 public interface IssueMapper {
 
-    @Mapping(target = "f", source = "additionalFields")
-    @Mapping(target = "asc", source = "ascendingSort")
+    @Mapping(target = "additionalFields", source = "f")
+    @Mapping(target = "ascendingSort", source = "asc")
     @Mapping(target = "assigned", source = "assigned")
     @Mapping(target = "assignees", source = "assignees")
     @Mapping(target = "author", source = "author")
@@ -31,9 +31,9 @@ public interface IssueMapper {
     @Mapping(target = "languages", source = "languages")
     @Mapping(target = "organization", source = "organization")
     @Mapping(target = "owaspTop10", source = "owaspTop10")
-    @Mapping(target = "p", source = "page")
+    @Mapping(target = "page", source = "p")
     @Mapping(target = "projects", source = "projects")
-    @Mapping(target = "ps", source = "pageSize")
+    @Mapping(target = "pageSize", source = "ps")
     @Mapping(target = "pullRequest", source = "pullRequest")
     @Mapping(target = "resolutions", source = "resolutions")
     @Mapping(target = "resolved", source = "resolved")
@@ -43,10 +43,10 @@ public interface IssueMapper {
     @Mapping(target = "statuses", source = "statuses")
     @Mapping(target = "tags", source = "tags")
     @Mapping(target = "types", source = "types")
-    SearchIssue toSearchIssue(SearchRequest request);
-
+    SearchIssue toSearchIssue(SearchRequest wsRequest);
+    
     @InheritInverseConfiguration(name = "toSearchIssue")
-    SearchRequest toSearchRequest(SearchIssue search);
+    SearchRequest toWsSearchRequest(SearchIssue search);
 
     @Mapping(target = "ruleName", ignore = true)
     @Mapping(target = "key", source = "key")
@@ -66,10 +66,10 @@ public interface IssueMapper {
     @Mapping(target = "updateDate", source = "updateDate")
     @Mapping(target = "closeDate", source = "closeDate")
     @Mapping(target = "organization", source = "organization")
-    IssueDTO toIssueDTO(Issue issue);
+    IssueDTO toIssueDTO(Issue wsIssue);
 
-    List<IssueDTO> toIssueDTOList(List<Issue> issues);
+    List<IssueDTO> toIssueDTOList(List<Issue> wsIssues);
 
     @InheritInverseConfiguration(name = "toIssueDTO")
-    Issue toIssue(IssueDTO issueDTO);
+    Issue toWsIssue(IssueDTO issueDTO);
 }

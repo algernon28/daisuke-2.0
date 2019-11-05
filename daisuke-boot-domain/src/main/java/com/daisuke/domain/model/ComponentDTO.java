@@ -16,10 +16,10 @@ import lombok.experimental.Accessors;
 public class ComponentDTO {
     @NonNull
     private String key;
+    private String refKey;
     private String organization;
-    @NonNull
-    private String id;
     private String name;
+    private String description;
     private String projectId;
     @NonNull
     private String qualifier;

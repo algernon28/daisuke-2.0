@@ -1,3 +1,4 @@
+
 package com.daisuke.adapters.sonarqube;
 
 import java.util.List;
@@ -7,11 +8,9 @@ import org.sonarqube.ws.Rules;
 import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.client.rules.RulesService;
 import org.sonarqube.ws.client.rules.SearchRequest;
-
 import com.daisuke.domain.adapters.RulesAdapter;
 import com.daisuke.domain.adapters.SearchException;
 import com.daisuke.domain.model.RuleDTO;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,8 +29,8 @@ public class SonarQubeRulesService implements RulesAdapter<SearchRule> {
 
     @Override
     public List<RuleDTO> findRules(SearchRule search) throws SearchException {
-	client.refreshConnection();
-	org.sonarqube.ws.client.rules.SearchRequest request = ruleMapper.toSearchRequest(search);
+        client.refreshConnection();
+	SearchRequest request = ruleMapper.toWsSearchRequest(search);
 	Rules.SearchResponse response;
 	RulesService rulesService = client.getRulesService();
 	response = rulesService.search(request);
@@ -47,7 +46,7 @@ public class SonarQubeRulesService implements RulesAdapter<SearchRule> {
     public RuleDTO findRuleByKey(String ruleKey) throws SearchException {
 	client.refreshConnection();
 	SearchRule search = new SearchRule().setRuleKey(ruleKey).addFieldToBeReturned("name").setPageSize("1");
-	SearchRequest request = ruleMapper.toSearchRequest(search);
+	SearchRequest request = ruleMapper.toWsSearchRequest(search);
 	Rules.SearchResponse response;
 	RulesService rulesService = client.getRulesService();
 	try {
@@ -56,13 +55,14 @@ public class SonarQubeRulesService implements RulesAdapter<SearchRule> {
 	    throw new SearchException(e.getMessage(), e);
 	}
 	Optional<Rule> rule = Optional.ofNullable(response.getRules(0));
-	if (rule.isEmpty()) {
+	RuleDTO result;
+	if (!rule.isPresent() || rule.isEmpty()) {
 	    String message = String.format(RULE_NAME_UNDEFINED, ruleKey);
 	    throw new RuleNotFoundException(message);
+	} else {
+	    result = ruleMapper.toRuleDTO(rule.get());
 	}
-	RuleDTO result = ruleMapper.toRuleDTO(rule.get());
 	log.debug("returning DTO: {}", result);
 	return result;
     }
-
 }
