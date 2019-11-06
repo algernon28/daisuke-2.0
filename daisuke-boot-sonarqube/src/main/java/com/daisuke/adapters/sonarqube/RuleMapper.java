@@ -47,7 +47,7 @@ public interface RuleMapper {
     SearchRequest toWsSearchRequest(SearchRule search);
 
     @Mapping(target = "key", source = "key")
-    @Mapping(target = "description", source = "htmlDesc_")
+    @Mapping(target = "description", source = "htmlDesc")
     @Mapping(target = "type", source = "type")
     @Mapping(target = "severity", source = "severity")
     RuleDTO toRuleDTO(Rule wsRule);

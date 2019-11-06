@@ -1,14 +1,17 @@
 package com.daisuke.adapters.sonarqube;
 
+import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
 import org.sonarqube.ws.Components.Component;
 import org.sonarqube.ws.client.components.SearchRequest;
 
 import com.daisuke.domain.model.ComponentDTO;
 
-@Mapper
+@Mapper(collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED, 
+nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS) 
 public interface ComponentMapper {
 
     @Mapping(target = "language", source = "language")
@@ -32,7 +35,6 @@ public interface ComponentMapper {
     @Mapping(target = "path", source = "path")
     @Mapping(target = "analysisDate", source = "analysisDate")   
     @Mapping(target = "language", source = "language")
-    @Mapping(target = "linesOfCode", source = "linesOfCode")
     ComponentDTO toComponentDTO(Component wsComponent);
     
     @InheritInverseConfiguration(name = "toComponentDTO")

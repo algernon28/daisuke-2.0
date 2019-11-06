@@ -24,7 +24,7 @@ public class ComponentDTO {
     @NonNull
     private String qualifier;
     private String path;
-    private String analisysDate;
+    private String analysisDate;
     private String language;
     private int linesOfCode;
     private BigDecimal codeQualityIndex;

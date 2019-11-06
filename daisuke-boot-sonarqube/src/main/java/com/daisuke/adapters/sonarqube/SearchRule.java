@@ -255,4 +255,5 @@ public class SearchRule {
 	fieldsToBeReturned.add(field);
 	return this;
     }
+   
 }

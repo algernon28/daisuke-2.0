@@ -1,27 +1,25 @@
 package com.daisuke.adapters.sonarqube.samples;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import static com.daisuke.adapters.sonarqube.Utils.randomDate;
+import static com.daisuke.adapters.sonarqube.Utils.randomEnumList;
+import static com.daisuke.adapters.sonarqube.Utils.randomEnumString;
+import static com.daisuke.adapters.sonarqube.Utils.randomNumber;
+import static com.daisuke.adapters.sonarqube.Utils.randomSonarBOOL;
+import static com.daisuke.adapters.sonarqube.Utils.randomString;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
+import org.sonarqube.ws.Common.RuleType;
+import org.sonarqube.ws.Rules.Rule;
 
+import com.daisuke.domain.model.RuleDTO;
 import com.daisuke.domain.model.SeverityEnum;
+import com.daisuke.domain.model.TypeEnum;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public abstract class RuleData {
-
-    public static String[] BOOL_VALUES = { "true", "false", "yes", "no" };
 
     public enum F_VALUES {
 	actives, createdAt, debtOverloaded, debtRemFn, defaultDebtRemFn, defaultRemFn, effortToFixDescription,
@@ -68,51 +66,119 @@ public abstract class RuleData {
 	}
     }
 
-    public static  final String ACTIVATION = randomBOOL();
-    public static final String ACTIVE_SEVERITIES = SeverityEnum.values()[randomNumber(0, SeverityEnum.values().length - 1)]
-	    .name();
-    public static final String ASC = randomBOOL();
-    public static final String AVAILABLE_SINCE = randomDate(new Calendar.Builder().setDate(1971, 1, 1).build().getTime(), new Date());
-    public static final List<String> CWE = Arrays.asList("113", "1999", "unknown");
-    public static final List <String> FIELDS = randomList(3, F_VALUES.values());
-    public static final String ruleKey = String.format("squid:%s", randomString(4, true));
-
-    public static String randomString(int size, boolean isAlphanumeric) {
-	String result = (isAlphanumeric) ? RandomStringUtils.randomAlphanumeric(size)
-		: RandomStringUtils.randomAlphabetic(size);
-	log.debug("random value: {}", result);
-	return result;
+    public enum S_VALUES {
+	name, updatedAt, createdAt, key
     }
-    
-    public static List<String> randomList(int size, @SuppressWarnings("rawtypes") Enum[] values){
-	List<String> result = new ArrayList<>();
-	for (int i = 1; i <= size; i++) {
-	    result.add(values[randomNumber(0, values.length)].name());
+
+    public enum REPOSITORIES_VALUES {
+	checkstyle, findbugs, sonarlint, pycharm, stylecop, codacy
+    }
+
+    public enum SANSTOP25_VALUES {
+	INSECURE_INTERACTION("insecure-interaction"), RISKY_RESOURCE("risky-resource"),
+	POROUS_DEFENSE("porous-defense");
+	@SuppressWarnings("unused")
+	private String description;
+
+	private SANSTOP25_VALUES(String description) {
+	    this.description = description;
 	}
-	return result;
     }
 
-    public static String randomBOOL() {
-	return BOOL_VALUES[randomNumber(0, BOOL_VALUES.length - 1)];
+    public enum SONARSOURCE_SECURITY_VALUES {
+	SQL_INJECTION("sql-injection"), COMMAND_INJECTION("command-injection"),
+	PATH_TRAVERSAL_INJECTION("path-traversal-injection"), LDAP_INJECTION("ldap-injection"),
+	XPATH_INJECTION("xpath-injection"), RCE("rce"), DOS("dos"), SSRF("ssrf"), CSRF("csrf"), XSS("xss"),
+	LOG_INJECTION("log-injection"), HTTP_RESPONSE_SPLITTING("http-response-splitting"),
+	OPEN_REDIRECT("open-redirect"), XXE("xxe"), OBJECT_INJECTION("object-injection"),
+	WEAK_CRYPTOGRAPHY("weak-cryptography"), AUTH("auth"), INSECURE_CONF("insecure-conf"),
+	FILE_MANIPOLATION("file-manipulation"), OTHERS("others");
+	@SuppressWarnings("unused")
+	private String description;
+
+	private SONARSOURCE_SECURITY_VALUES(String description) {
+	    this.description = description;
+	}
     }
 
-    public static String randomDate(Date startDate, Date endDate) {
-	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-	long start = startDate.getTime();
-	long end = endDate.getTime();
-	Instant instant = Instant.ofEpochSecond(start + (long) Math.random() * (end - start));
-	LocalDateTime result = LocalDateTime.ofInstant(instant, ZoneId.of("UTC-06:00"));
-	return result.format(dtf);
+    public enum STATUSES_VALUES {
+	BETA, DEPRECATED, READY, REMOVED
     }
 
-    public static int randomNumber(int startInclusive, int endExclusive) {
-	int result = RandomUtils.nextInt(startInclusive, endExclusive);
-	log.debug("random int: {}", result);
-	return result;
-    }
+    public static final String ACTIVATION = randomSonarBOOL();
+    public static final String ACTIVE_SEVERITIES = SeverityEnum.values()[randomNumber(0,
+	    SeverityEnum.values().length - 1)].name();
+    public static final String ASC = randomSonarBOOL();
 
     private RuleData() {
 
+    }
+
+    public static class RuleSample {
+	public static final String key = randomString(10, true);
+	public static final String description = String.format("generic description: %s", randomString(5, true));
+	public static final String type = randomEnumString(TypeEnum.values());
+	public static final String severity = randomEnumString(SeverityEnum.values());
+	public static final Integer occurrencies = randomNumber(0, 1000);
+
+	public static final List<Rule> randomRuleList(int size) {
+	    List<Rule> result = new ArrayList<>();
+	    for (int i = 0; i < size; i++) {
+		Rule rule = Rule.newBuilder().setKey(key + i).setHtmlDesc(description + i)
+			.setType(RuleType.valueOf(type)).setSeverity(severity).build();
+		result.add(i, rule);
+	    }
+	    return result;
+	}
+
+	public static final List<RuleDTO> randomRuleDTOList(int size) {
+	    List<RuleDTO> result = new ArrayList<>();
+	    for (int i = 0; i < size; i++) {
+		RuleDTO rule = new RuleDTO().setKey(key + i).setDescription(description + i)
+			.setType(TypeEnum.valueOf(type)).setSeverity(SeverityEnum.valueOf(severity));
+		result.add(i, rule);
+	    }
+	    return result;
+	}
+
+	private RuleSample() {
+	}
+    }
+
+    public static class SearchSample {
+	public static final String randomActivation = randomSonarBOOL();
+	public static final List<String> randomActiveSeverities = randomEnumList(2, SeverityEnum.values());
+	public static final String randomAsc = randomSonarBOOL();
+	public static final String randomCompareToProfile = randomString(8, false);
+	public static final String randomDate = randomDate(1999, 2019);
+	public static final List<String> randomCwe = Collections
+		.unmodifiableList(Arrays.asList("rule" + randomNumber(1, 100), "rule2" + randomNumber(1, 100)));
+	public static final List<String> randomFields = randomEnumList(4, F_VALUES.values());
+	public static final List<String> randomFacets = randomEnumList(2, FACETS_VALUES.values());
+	public static final List<String> randomInheritance = randomEnumList(2, INHERITANCE_VALUES.values());
+	public static final String randomIncludeExt = randomSonarBOOL();
+	public static final String randomIsTemplate = randomSonarBOOL();
+	public static final List<String> randomLanguages = randomEnumList(2, LANGUAGES_VALUES.values());
+	public static final String randomOrganization = String.format("org-%s", randomString(15, false));
+	public static final List<String> randomOwaspTop10 = randomEnumList(3, OWASPTOP10_VALUES.values());
+	public static final String randomPage = String.valueOf(randomNumber(1, 10));
+	public static final String randomPageSize = String.valueOf(randomNumber(1, 500));
+	public static final String randomUtf8Query = String.format("xpath - %s", randomNumber(1, 1000));
+	public static final String randomQProfile = String.format("profile-%s", randomString(5, true));
+	public static final List<String> randomRepositories = randomEnumList(2, REPOSITORIES_VALUES.values());
+	public static final String randomRuleKey = String.format("squid:%s", randomString(4, true));
+	public static final String randomSortField = randomEnumString(S_VALUES.values());
+	public static final List<String> randomSansTop25 = randomEnumList(2, SANSTOP25_VALUES.values());
+	public static final List<String> randomSeverities = randomEnumList(2, SeverityEnum.values());
+	public static final List<String> randomSonarsourceSecurity = randomEnumList(2,
+		SONARSOURCE_SECURITY_VALUES.values());
+	public static final List<String> randomStatuses = randomEnumList(2, STATUSES_VALUES.values());
+	public static final List<String> randomTags = Collections.unmodifiableList(Arrays.asList("tag1", "tag2"));
+	public static final String randomTemplateKey = randomString(10, true);
+	public static final List<String> randomTypes = randomEnumList(1, TypeEnum.values());
+
+	private SearchSample() {
+	}
     }
 
 }

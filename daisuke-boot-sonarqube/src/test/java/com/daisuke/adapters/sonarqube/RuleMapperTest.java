@@ -3,20 +3,27 @@
  */
 package com.daisuke.adapters.sonarqube;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.*;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.unitils.reflectionassert.ReflectionAssert.assertLenientEquals;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.LENIENT_ORDER;
 
-import java.util.Arrays;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.*;
+import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.mapstruct.factory.Mappers;
+import org.sonarqube.ws.Common.RuleType;
+import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.client.rules.SearchRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.unitils.UnitilsJUnit4;
 
+import com.daisuke.domain.model.RuleDTO;
 import com.daisuke.domain.model.SeverityEnum;
 import com.daisuke.domain.model.TypeEnum;
 
@@ -24,26 +31,50 @@ import com.daisuke.domain.model.TypeEnum;
  * @author Andrea M.
  *
  */
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RuleMapperTest {
-    @Autowired
+class RuleMapperTest extends UnitilsJUnit4 {
+
     private RuleMapper mapper;
-    private SearchRequest wsRequest;
+    private SearchRequest expectedWsSearch;
+    private SearchRule expectedSearchRule;
+    private Rule expectedWsRule;
+    private RuleDTO expectedRuleDTO;
+    private List<Rule> expectedRuleList;
+    private List<RuleDTO> expectedRuleDTOList;
 
     /**
      * @throws java.lang.Exception
      */
     @BeforeAll
     void setUpBeforeClass() throws Exception {
-	wsRequest = new SearchRequest().setActivation(randomBOOL()).setActiveSeverities(randomList(2, SeverityEnum.values()))
-		.setActivation(randomBOOL()).setAsc(randomBOOL()).setAvailableSince("1999-09-13").setCompareToProfile(randomString(8, false))
-		.setCwe(Arrays.asList("rule1","rule2"))
-		.setF(Arrays.asList("lang", "tags")).setFacets(Arrays.asList("severities","types", "owaspTop10")).setIncludeExternal(randomBOOL()).setInheritance(Arrays.asList("OVERRIDES"))
-		.setIsTemplate("no").setLanguages(Arrays.asList("java","c")).setOrganization("someorganization").setOwaspTop10(Arrays.asList("a1","a4"))
-		.setP("1").setPs("500").setQ("xpath").setQprofile("qualityProfileKey-123").setRepositories(Arrays.asList("findbugs","sonarlint"))
-		.setRuleKey("rulekey-123").setS("updateAt").setSansTop25(Arrays.asList("risky-resource")).setSeverities(Arrays.asList("BLOCKER","CRITICAL"))
-		.setSonarsourceSecurity(Arrays.asList("sql-injection","open-redirect")).setStatuses(Arrays.asList("BETA", "REMOVED")).setTags(Arrays.asList("t1","t2"))
-		.setTemplateKey("tk").setTypes(Arrays.asList("BUG"));
+	mapper = Mappers.getMapper(RuleMapper.class);
+	expectedWsSearch = new SearchRequest().setActivation(randomActivation).setActiveSeverities(randomSeverities)
+		.setAsc(randomAsc).setAvailableSince(randomDate).setCompareToProfile(randomCompareToProfile)
+		.setCwe(randomCwe).setF(randomFields).setFacets(randomFacets).setIncludeExternal(randomIncludeExt)
+		.setInheritance(randomInheritance).setIsTemplate(randomIsTemplate).setLanguages(randomLanguages)
+		.setOrganization(randomOrganization).setOwaspTop10(randomOwaspTop10).setP(randomPage)
+		.setPs(randomPageSize).setQ(randomUtf8Query).setQprofile(randomQProfile)
+		.setRepositories(randomRepositories).setRuleKey(randomRuleKey).setS(randomSortField)
+		.setSansTop25(randomSansTop25).setSeverities(randomSeverities)
+		.setSonarsourceSecurity(randomSonarsourceSecurity).setStatuses(randomStatuses).setTags(randomTags)
+		.setTemplateKey(randomTemplateKey).setTypes(randomTypes);
+
+	expectedSearchRule = new SearchRule().setActivation(randomActivation).setActiveSeverities(randomSeverities)
+		.setAscendingSort(randomAsc).setAvailableSince(randomDate).setCompareToProfile(randomCompareToProfile)
+		.setCwe(randomCwe).setFieldsToBeReturned(randomFields).setFacets(randomFacets)
+		.setIncludeExternal(randomIncludeExt).setInheritance(randomInheritance).setIsTemplate(randomIsTemplate)
+		.setLanguages(randomLanguages).setOrganization(randomOrganization).setOwaspTop10(randomOwaspTop10)
+		.setPage(randomPage).setPageSize(randomPageSize).setUtf8Query(randomUtf8Query)
+		.setQprofile(randomQProfile).setRepositories(randomRepositories).setRuleKey(randomRuleKey)
+		.setSortField(randomSortField).setSansTop25(randomSansTop25).setSeverities(randomSeverities)
+		.setSonarsourceSecurity(randomSonarsourceSecurity).setStatuses(randomStatuses).setTags(randomTags)
+		.setTemplateKey(randomTemplateKey).setTypes(randomTypes);
+	expectedRuleDTO = new RuleDTO().setDescription(description).setKey(key)
+		.setSeverity(SeverityEnum.valueOf(severity)).setType(TypeEnum.valueOf(type));
+	expectedWsRule = Rule.newBuilder().setHtmlDesc(description).setKey(key).setSeverity(severity).setType(RuleType.valueOf(type)).build();
+	expectedRuleDTOList = randomRuleDTOList(10);
+	expectedRuleList = randomRuleList(10);
     }
 
     /**
@@ -58,14 +89,17 @@ class RuleMapperTest {
      */
     @AfterEach
     void tearDown() throws Exception {
+
     }
 
     /**
-     * Test method for {@link com.daisuke.adapters.sonarqube.RuleMapper#toSearchRule(org.sonarqube.ws.client.rules.SearchRequest)}.
+     * Test method for
+     * {@link com.daisuke.adapters.sonarqube.RuleMapper#toSearchRule(org.sonarqube.ws.client.rules.SearchRequest)}.
      */
     @Test
     final void testToSearchRule() {
-	SearchRule search = mapper.toSearchRule(wsRequest)
+	SearchRule search = mapper.toSearchRule(expectedWsSearch);
+	assertThat(expectedSearchRule).isEqualTo(search);
     }
 
     /**
@@ -74,7 +108,9 @@ class RuleMapperTest {
      */
     @Test
     final void testToWsSearchRequest() {
-	fail("Not yet implemented"); // TODO
+	SearchRequest wsSearch = mapper.toWsSearchRequest(expectedSearchRule);
+	//assertReflectionEquals(expectedWsSearch, wsSearch, LENIENT_ORDER);
+	assertThat(wsSearch).isEqualTo(wsSearch);
     }
 
     /**
@@ -83,7 +119,8 @@ class RuleMapperTest {
      */
     @Test
     final void testToRuleDTO() {
-	fail("Not yet implemented"); // TODO
+	RuleDTO ruleDTO = mapper.toRuleDTO(expectedWsRule);
+	assertThat(expectedRuleDTO).isEqualTo(ruleDTO);
     }
 
     /**
@@ -92,7 +129,8 @@ class RuleMapperTest {
      */
     @Test
     final void testToRuleDTOList() {
-	fail("Not yet implemented"); // TODO
+	List<RuleDTO> list = mapper.toRuleDTOList(expectedRuleList) ;
+	assertThat(expectedRuleDTOList).isEqualTo(list);
     }
 
     /**
@@ -101,7 +139,9 @@ class RuleMapperTest {
      */
     @Test
     final void testToWsRule() {
-	fail("Not yet implemented"); // TODO
+	Rule rule = mapper.toWsRule(expectedRuleDTO);
+	//assertReflectionEquals(expectedWsRule, rule, LENIENT_ORDER);
+	assertThat(expectedWsRule).isEqualTo(rule);
     }
 
 }
