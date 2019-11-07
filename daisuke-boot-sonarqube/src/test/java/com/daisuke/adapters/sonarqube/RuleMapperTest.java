@@ -3,12 +3,40 @@
  */
 package com.daisuke.adapters.sonarqube;
 
-import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.*;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.*;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.description;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.key;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.randomRuleDTOList;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.randomRuleList;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.severity;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.type;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomActivation;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomAsc;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomCompareToProfile;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomCwe;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomDate;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomFacets;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomFields;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomIncludeExt;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomInheritance;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomIsTemplate;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomLanguages;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomOrganization;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomOwaspTop10;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomPage;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomPageSize;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomQProfile;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomRepositories;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomRuleKey;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomSansTop25;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomSeverities;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomSonarsourceSecurity;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomSortField;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomStatuses;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomTags;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomTemplateKey;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomTypes;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomUtf8Query;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.unitils.reflectionassert.ReflectionAssert.assertLenientEquals;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.LENIENT_ORDER;
 
 import java.util.List;
 
@@ -21,7 +49,6 @@ import org.mapstruct.factory.Mappers;
 import org.sonarqube.ws.Common.RuleType;
 import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.client.rules.SearchRequest;
-import org.unitils.UnitilsJUnit4;
 
 import com.daisuke.domain.model.RuleDTO;
 import com.daisuke.domain.model.SeverityEnum;
@@ -33,7 +60,7 @@ import com.daisuke.domain.model.TypeEnum;
  */
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RuleMapperTest extends UnitilsJUnit4 {
+class RuleMapperTest {
 
     private RuleMapper mapper;
     private SearchRequest expectedWsSearch;
@@ -72,7 +99,8 @@ class RuleMapperTest extends UnitilsJUnit4 {
 		.setTemplateKey(randomTemplateKey).setTypes(randomTypes);
 	expectedRuleDTO = new RuleDTO().setDescription(description).setKey(key)
 		.setSeverity(SeverityEnum.valueOf(severity)).setType(TypeEnum.valueOf(type));
-	expectedWsRule = Rule.newBuilder().setHtmlDesc(description).setKey(key).setSeverity(severity).setType(RuleType.valueOf(type)).build();
+	expectedWsRule = Rule.newBuilder().setHtmlDesc(description).setKey(key).setSeverity(severity)
+		.setType(RuleType.valueOf(type)).build();
 	expectedRuleDTOList = randomRuleDTOList(10);
 	expectedRuleList = randomRuleList(10);
     }
@@ -99,7 +127,7 @@ class RuleMapperTest extends UnitilsJUnit4 {
     @Test
     final void testToSearchRule() {
 	SearchRule search = mapper.toSearchRule(expectedWsSearch);
-	assertThat(expectedSearchRule).isEqualTo(search);
+	assertThat(expectedSearchRule).isEqualToComparingFieldByField(search);
     }
 
     /**
@@ -109,8 +137,7 @@ class RuleMapperTest extends UnitilsJUnit4 {
     @Test
     final void testToWsSearchRequest() {
 	SearchRequest wsSearch = mapper.toWsSearchRequest(expectedSearchRule);
-	//assertReflectionEquals(expectedWsSearch, wsSearch, LENIENT_ORDER);
-	assertThat(wsSearch).isEqualTo(wsSearch);
+	assertThat(wsSearch).isEqualToComparingFieldByField(wsSearch);
     }
 
     /**
@@ -120,7 +147,7 @@ class RuleMapperTest extends UnitilsJUnit4 {
     @Test
     final void testToRuleDTO() {
 	RuleDTO ruleDTO = mapper.toRuleDTO(expectedWsRule);
-	assertThat(expectedRuleDTO).isEqualTo(ruleDTO);
+	assertThat(expectedRuleDTO).isEqualToComparingFieldByField(ruleDTO);
     }
 
     /**
@@ -129,7 +156,7 @@ class RuleMapperTest extends UnitilsJUnit4 {
      */
     @Test
     final void testToRuleDTOList() {
-	List<RuleDTO> list = mapper.toRuleDTOList(expectedRuleList) ;
+	List<RuleDTO> list = mapper.toRuleDTOList(expectedRuleList);
 	assertThat(expectedRuleDTOList).isEqualTo(list);
     }
 
@@ -140,8 +167,7 @@ class RuleMapperTest extends UnitilsJUnit4 {
     @Test
     final void testToWsRule() {
 	Rule rule = mapper.toWsRule(expectedRuleDTO);
-	//assertReflectionEquals(expectedWsRule, rule, LENIENT_ORDER);
-	assertThat(expectedWsRule).isEqualTo(rule);
+	assertThat(expectedWsRule).isEqualToComparingFieldByField(rule);
     }
 
 }

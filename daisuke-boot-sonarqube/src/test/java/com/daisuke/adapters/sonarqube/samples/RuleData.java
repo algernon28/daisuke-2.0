@@ -31,6 +31,7 @@ public abstract class RuleData {
 	LANGUAGES("languages"), REPOSITORIES("repositories"), TAGS("tags"), SEVERITIES("severities"),
 	ACTIVE_SEVERITIES("active_severities"), STATUSES("statuses"), TYPES("types"), TRUE("true"), CWE("cwe"),
 	OWASPTOP10("owaspTop10"), SANSTOP25("sansTop25"), SONARSOURCE_SECURITY("sonarsourceSecurity");
+
 	@SuppressWarnings("unused")
 	private String description;
 
@@ -55,6 +56,7 @@ public abstract class RuleData {
 	PYTHON("py", "Python"), RPG("rpg", "RPG"), RUBY("ruby", "Ruby"), SCALA("scala", "Scala"),
 	SWIFT("swift", "Swift"), TSQL("tsql", "T-SQL"), TYPESCRIPT("ts", "TypeScript"), VBNET("vbnet", "VB.NET"),
 	XML("xml", "XML");
+
 	@SuppressWarnings("unused")
 	private String key;
 	@SuppressWarnings("unused")
@@ -77,6 +79,7 @@ public abstract class RuleData {
     public enum SANSTOP25_VALUES {
 	INSECURE_INTERACTION("insecure-interaction"), RISKY_RESOURCE("risky-resource"),
 	POROUS_DEFENSE("porous-defense");
+
 	@SuppressWarnings("unused")
 	private String description;
 
@@ -93,6 +96,7 @@ public abstract class RuleData {
 	OPEN_REDIRECT("open-redirect"), XXE("xxe"), OBJECT_INJECTION("object-injection"),
 	WEAK_CRYPTOGRAPHY("weak-cryptography"), AUTH("auth"), INSECURE_CONF("insecure-conf"),
 	FILE_MANIPOLATION("file-manipulation"), OTHERS("others");
+
 	@SuppressWarnings("unused")
 	private String description;
 
@@ -145,7 +149,7 @@ public abstract class RuleData {
 	}
     }
 
-    public static class SearchSample {
+    public static class SearchSample extends CommonDataSample {
 	public static final String randomActivation = randomSonarBOOL();
 	public static final List<String> randomActiveSeverities = randomEnumList(2, SeverityEnum.values());
 	public static final String randomAsc = randomSonarBOOL();
@@ -159,10 +163,7 @@ public abstract class RuleData {
 	public static final String randomIncludeExt = randomSonarBOOL();
 	public static final String randomIsTemplate = randomSonarBOOL();
 	public static final List<String> randomLanguages = randomEnumList(2, LANGUAGES_VALUES.values());
-	public static final String randomOrganization = String.format("org-%s", randomString(15, false));
 	public static final List<String> randomOwaspTop10 = randomEnumList(3, OWASPTOP10_VALUES.values());
-	public static final String randomPage = String.valueOf(randomNumber(1, 10));
-	public static final String randomPageSize = String.valueOf(randomNumber(1, 500));
 	public static final String randomUtf8Query = String.format("xpath - %s", randomNumber(1, 1000));
 	public static final String randomQProfile = String.format("profile-%s", randomString(5, true));
 	public static final List<String> randomRepositories = randomEnumList(2, REPOSITORIES_VALUES.values());

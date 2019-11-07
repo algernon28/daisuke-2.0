@@ -1,17 +1,16 @@
 package com.daisuke.adapters.sonarqube;
 
-import org.mapstruct.CollectionMappingStrategy;
+import java.util.List;
+
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValueCheckStrategy;
 import org.sonarqube.ws.Components.Component;
 import org.sonarqube.ws.client.components.SearchRequest;
 
 import com.daisuke.domain.model.ComponentDTO;
 
-@Mapper(collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED, 
-nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS) 
+@Mapper
 public interface ComponentMapper {
 
     @Mapping(target = "language", source = "language")
@@ -19,12 +18,12 @@ public interface ComponentMapper {
     @Mapping(target = "pageSize", source = "ps")
     @Mapping(target = "page", source = "p")
     @Mapping(target = "qualifiers", source = "qualifiers")
-    @Mapping(target = "utf8Query", source = "q")
+    @Mapping(target = "searchFilter", source = "q")
     SearchComponent toSearchComponent(SearchRequest wsRequest);
-    
+
     @InheritInverseConfiguration(name = "toSearchComponent")
     SearchRequest toWsSearchRequest(SearchComponent search);
-    
+
     @Mapping(target = "key", source = "key")
     @Mapping(target = "refKey", source = "refKey")
     @Mapping(target = "organization", source = "organization")
@@ -33,10 +32,12 @@ public interface ComponentMapper {
     @Mapping(target = "projectId", source = "projectId")
     @Mapping(target = "qualifier", source = "qualifier")
     @Mapping(target = "path", source = "path")
-    @Mapping(target = "analysisDate", source = "analysisDate")   
+    @Mapping(target = "analysisDate", source = "analysisDate")
     @Mapping(target = "language", source = "language")
     ComponentDTO toComponentDTO(Component wsComponent);
-    
+
     @InheritInverseConfiguration(name = "toComponentDTO")
     Component toWsComponent(ComponentDTO componentDTO);
+
+    List<ComponentDTO> toComponentDTOList(List<Component> wsComponents);
 }

@@ -49,15 +49,15 @@ public class SearchComponent {
      * 
      * Example value: "20"
      */
-    private String pageSize; 
+    private String pageSize;
     /**
      * Example value: "my-org"
      */
     private String organization;
     /**
-     * Example value: "xpath"
+     * Example value: "sonar"
      */
-    private String utf8Query;
+    private String searchFilter;
 
     public SearchComponent addQualifier(String qualifier) {
 	if (qualifiers == null) {

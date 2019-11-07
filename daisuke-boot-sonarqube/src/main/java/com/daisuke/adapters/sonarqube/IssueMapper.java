@@ -1,19 +1,16 @@
 package com.daisuke.adapters.sonarqube;
- 
+
 import java.util.List;
 
-import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValueCheckStrategy;
 import org.sonarqube.ws.Issues.Issue;
 import org.sonarqube.ws.client.issues.SearchRequest;
 
 import com.daisuke.domain.model.IssueDTO;
 
-@Mapper(collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED, 
-nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS) 
+@Mapper
 public interface IssueMapper {
 
     @Mapping(target = "additionalFields", source = "additionalFields")
@@ -47,7 +44,7 @@ public interface IssueMapper {
     @Mapping(target = "tags", source = "tags")
     @Mapping(target = "types", source = "types")
     SearchIssue toSearchIssue(SearchRequest wsRequest);
-    
+
     @InheritInverseConfiguration(name = "toSearchIssue")
     SearchRequest toWsSearchRequest(SearchIssue search);
 
