@@ -12,6 +12,10 @@ import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
+import com.daisuke.domain.model.MeasureEnum;
+import com.daisuke.domain.model.SeverityEnum;
+import com.daisuke.domain.model.TypeEnum;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -63,6 +67,24 @@ public class Utils {
 	return result;
     }
 
+    public static SeverityEnum randomSeverity() {
+	SeverityEnum[] values = SeverityEnum.values();
+	int index = randomNumber(0, values.length);
+	return values[index];
+    }
+
+    public static TypeEnum randomType() {
+	TypeEnum[] values = TypeEnum.values();
+	int index = randomNumber(0, values.length);
+	return values[index];
+    }
+
+    public static MeasureEnum randomMeasure() {
+	MeasureEnum[] values = MeasureEnum.values();
+	int index = randomNumber(0, values.length);
+	return values[index];
+    }
+
     /**
      * 
      * @return current year
@@ -78,7 +100,18 @@ public class Utils {
     }
 
     public static String randomEnumString(@SuppressWarnings("rawtypes") Enum[] enums) {
-	return randomEnumList(1, enums).get(0);
+	int index = randomNumber(0, enums.length);
+	return enums[index].name();
+    }
+
+    @SuppressWarnings("rawtypes")
+    public final static List<Enum> randomEnumList(int size, Enum[] enums) {
+	List<Enum> result = new ArrayList<>();
+	for (int i = 1; i <= size; i++) {
+	    int index = randomNumber(0, enums.length);
+	    result.add(enums[index]);
+	}
+	return Collections.unmodifiableList(result);
     }
 
     /**
@@ -87,10 +120,11 @@ public class Utils {
      * @param enums
      * @return a list of random elements from {@code enums}. This list is immutable.
      */
-    public final static List<String> randomEnumList(int size, @SuppressWarnings("rawtypes") Enum[] enums) {
+    public final static List<String> randomEnumStringList(int size, @SuppressWarnings("rawtypes") Enum[] enums) {
 	List<String> result = new ArrayList<>();
 	for (int i = 1; i <= size; i++) {
-	    result.add(enums[randomNumber(0, enums.length)].name());
+	    int index = randomNumber(0, enums.length);
+	    result.add(enums[index].name());
 	}
 	return Collections.unmodifiableList(result);
     }

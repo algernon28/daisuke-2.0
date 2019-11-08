@@ -3,39 +3,8 @@
  */
 package com.daisuke.adapters.sonarqube;
 
-import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.description;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.key;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.randomRuleDTOList;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.randomRuleList;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.severity;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.type;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomActivation;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomAsc;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomCompareToProfile;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomCwe;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomDate;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomFacets;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomFields;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomIncludeExt;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomInheritance;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomIsTemplate;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomLanguages;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomOrganization;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomOwaspTop10;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomPage;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomPageSize;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomQProfile;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomRepositories;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomRuleKey;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomSansTop25;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomSeverities;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomSonarsourceSecurity;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomSortField;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomStatuses;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomTags;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomTemplateKey;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomTypes;
-import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.randomUtf8Query;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample.*;
+import static com.daisuke.adapters.sonarqube.samples.RuleData.SearchSample.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
@@ -76,33 +45,12 @@ class RuleMapperTest {
     @BeforeAll
     void setUpBeforeClass() throws Exception {
 	mapper = Mappers.getMapper(RuleMapper.class);
-	expectedWsSearch = new SearchRequest().setActivation(randomActivation).setActiveSeverities(randomSeverities)
-		.setAsc(randomAsc).setAvailableSince(randomDate).setCompareToProfile(randomCompareToProfile)
-		.setCwe(randomCwe).setF(randomFields).setFacets(randomFacets).setIncludeExternal(randomIncludeExt)
-		.setInheritance(randomInheritance).setIsTemplate(randomIsTemplate).setLanguages(randomLanguages)
-		.setOrganization(randomOrganization).setOwaspTop10(randomOwaspTop10).setP(randomPage)
-		.setPs(randomPageSize).setQ(randomUtf8Query).setQprofile(randomQProfile)
-		.setRepositories(randomRepositories).setRuleKey(randomRuleKey).setS(randomSortField)
-		.setSansTop25(randomSansTop25).setSeverities(randomSeverities)
-		.setSonarsourceSecurity(randomSonarsourceSecurity).setStatuses(randomStatuses).setTags(randomTags)
-		.setTemplateKey(randomTemplateKey).setTypes(randomTypes);
-
-	expectedSearchRule = new SearchRule().setActivation(randomActivation).setActiveSeverities(randomSeverities)
-		.setAscendingSort(randomAsc).setAvailableSince(randomDate).setCompareToProfile(randomCompareToProfile)
-		.setCwe(randomCwe).setFieldsToBeReturned(randomFields).setFacets(randomFacets)
-		.setIncludeExternal(randomIncludeExt).setInheritance(randomInheritance).setIsTemplate(randomIsTemplate)
-		.setLanguages(randomLanguages).setOrganization(randomOrganization).setOwaspTop10(randomOwaspTop10)
-		.setPage(randomPage).setPageSize(randomPageSize).setUtf8Query(randomUtf8Query)
-		.setQprofile(randomQProfile).setRepositories(randomRepositories).setRuleKey(randomRuleKey)
-		.setSortField(randomSortField).setSansTop25(randomSansTop25).setSeverities(randomSeverities)
-		.setSonarsourceSecurity(randomSonarsourceSecurity).setStatuses(randomStatuses).setTags(randomTags)
-		.setTemplateKey(randomTemplateKey).setTypes(randomTypes);
-	expectedRuleDTO = new RuleDTO().setDescription(description).setKey(key)
-		.setSeverity(SeverityEnum.valueOf(severity)).setType(TypeEnum.valueOf(type));
-	expectedWsRule = Rule.newBuilder().setHtmlDesc(description).setKey(key).setSeverity(severity)
-		.setType(RuleType.valueOf(type)).build();
+	expectedWsSearch = getWsSearch();
+	expectedSearchRule = getSearchRule();
+	expectedRuleDTO =getRuleDTO();
 	expectedRuleDTOList = randomRuleDTOList(10);
 	expectedRuleList = randomRuleList(10);
+	expectedWsRule = getWsRule();
     }
 
     /**
@@ -137,7 +85,7 @@ class RuleMapperTest {
     @Test
     final void testToWsSearchRequest() {
 	SearchRequest wsSearch = mapper.toWsSearchRequest(expectedSearchRule);
-	assertThat(wsSearch).isEqualToComparingFieldByField(wsSearch);
+	assertThat(expectedWsSearch).isEqualToComparingFieldByField(wsSearch);
     }
 
     /**
@@ -147,7 +95,7 @@ class RuleMapperTest {
     @Test
     final void testToRuleDTO() {
 	RuleDTO ruleDTO = mapper.toRuleDTO(expectedWsRule);
-	assertThat(expectedRuleDTO).isEqualToComparingFieldByField(ruleDTO);
+	assertThat(expectedRuleDTO).isEqualTo(ruleDTO);
     }
 
     /**

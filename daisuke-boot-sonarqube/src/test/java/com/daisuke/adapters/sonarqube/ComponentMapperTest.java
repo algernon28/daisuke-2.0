@@ -5,8 +5,7 @@ package com.daisuke.adapters.sonarqube;
 
 import static com.daisuke.adapters.sonarqube.samples.ComponentData.ComponentSample.*;
 import static com.daisuke.adapters.sonarqube.samples.ComponentData.SearchSample.*;
-
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.mapstruct.factory.Mappers;
 import org.sonarqube.ws.Components.Component;
 import org.sonarqube.ws.client.components.SearchRequest;
-import static com.daisuke.adapters.sonarqube.Utils.*;
 import com.daisuke.domain.model.ComponentDTO;
 
 /**
@@ -27,26 +25,18 @@ class ComponentMapperTest {
     private ComponentMapper mapper;
     private SearchRequest expectedWsSearch;
     private SearchComponent expectedSearchComponent;
-    private Component wsComponent;
-    private ComponentDTO componentDTO;
-    private List<Component> expectedComponentList;
-    private List<ComponentDTO> expectedComponentDTOList;
-
+    private Component expectedWsComponent;
+    private ComponentDTO expectedComponentDTO;
     /**
      * @throws java.lang.Exception
      */
     @BeforeAll
     void setUpBeforeClass() throws Exception {
 	mapper = Mappers.getMapper(ComponentMapper.class);
-	expectedWsSearch = new SearchRequest().setLanguage(randomLanguage).setOrganization(randomOrganization)
-		.setP(randomPage.toString()).setPs(randomPageSize.toString()).setQ(randomSearchFilter)
-		.setQualifiers(randomQualifiers);
-	expectedSearchComponent = new SearchComponent().setLanguage(randomLanguage).setOrganization(randomOrganization)
-		.setPageSize(randomPageSize.toString()).setPage(randomPage.toString())
-		.setSearchFilter(randomSearchFilter).setQualifiers(randomQualifiers);
-	wsComponent = Component.newBuilder().setLanguage(randomLanguage).setAnalysisDate(randomDate(2010, 2019))
-		.setDescription(randomString(50, true)).setKey(randomString(5, true)).setLanguage(randomLanguage)
-		.set
+	expectedWsSearch = getWsSearch();
+	expectedSearchComponent = getSearchComponent();
+	expectedWsComponent = getWsComponent();
+	expectedComponentDTO = getComponentDTO();
     }
 
     /**
@@ -55,7 +45,8 @@ class ComponentMapperTest {
      */
     @Test
     final void testToSearchComponent() {
-	fail("Not yet implemented");
+	SearchComponent search = mapper.toSearchComponent(expectedWsSearch);
+	assertThat(expectedSearchComponent).isEqualToComparingFieldByField(search);
     }
 
     /**
@@ -64,7 +55,8 @@ class ComponentMapperTest {
      */
     @Test
     final void testToWsSearchRequest() {
-	fail("Not yet implemented");
+	SearchRequest wsSearch = mapper.toWsSearchRequest(expectedSearchComponent);
+	assertThat(expectedWsSearch).isEqualToComparingFieldByField(wsSearch);
     }
 
     /**
@@ -73,7 +65,8 @@ class ComponentMapperTest {
      */
     @Test
     final void testToComponentDTO() {
-	fail("Not yet implemented");
+	ComponentDTO componentDTO = mapper.toComponentDTO(expectedWsComponent);
+	assertThat(expectedComponentDTO).isEqualToComparingFieldByField(componentDTO);
     }
 
     /**
@@ -82,7 +75,8 @@ class ComponentMapperTest {
      */
     @Test
     final void testToWsComponent() {
-	fail("Not yet implemented");
+	Component wsComponent = mapper.toWsComponent(expectedComponentDTO);
+	assertThat(expectedWsComponent).isEqualToComparingFieldByField(wsComponent);
     }
 
 }
