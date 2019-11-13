@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -46,9 +47,13 @@ public class Utils {
      *         31/12/{@code <endYear>}
      */
     public static String randomDate(int startYear, int endYear) {
+	return randomDate(startYear, endYear, SONAR_DATE_PATTERN);
+    }
+
+    public static String randomDate(int startYear, int endYear, String pattern) {
 	Calendar startDate = new Calendar.Builder().setDate(startYear, 1, 1).build();
 	Calendar endDate = new Calendar.Builder().setDate(endYear, 12, 31).build();
-	DateTimeFormatter dtf = DateTimeFormatter.ofPattern(SONAR_DATE_PATTERN);
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern(pattern);
 	long start = startDate.getTimeInMillis();
 	long end = endDate.getTimeInMillis();
 	Instant instant = Instant.ofEpochSecond(start + (long) Math.random() * (end - start));
@@ -64,6 +69,23 @@ public class Utils {
 	String result = (isAlphanumeric) ? RandomStringUtils.randomAlphanumeric(size)
 		: RandomStringUtils.randomAlphabetic(size);
 	log.debug("random value: {}", result);
+	return result;
+    }
+
+    public static List<String> randomStringList(int size, boolean isAlphanumeric) {
+	List<String> result = new ArrayList<>();
+	for (int i = 0; i < size; i++) {
+	    int stringSize = RandomUtils.nextInt(1, 20);
+	    result.add(randomString(stringSize, isAlphanumeric));
+	}
+	return result;
+    }
+
+    public static List<String> randomUUIDList(int size) {
+	List<String> result = new ArrayList<>();
+	for (int i = 0; i < size; i++) {
+	    result.add(UUID.randomUUID().toString());
+	}
 	return result;
     }
 

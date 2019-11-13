@@ -30,5 +30,4 @@ public class IssueDTO {
     private String creationDate;
     private String updateDate;
     private String closeDate;
-    private String organization;
 }

@@ -45,8 +45,8 @@ class ComponentMapperTest {
      */
     @Test
     final void testToSearchComponent() {
-	SearchComponent search = mapper.toSearchComponent(expectedWsSearch);
-	assertThat(expectedSearchComponent).isEqualToComparingFieldByField(search);
+	SearchComponent actual = mapper.toSearchComponent(expectedWsSearch);
+	assertThat(expectedSearchComponent).isEqualToComparingFieldByField(actual);
     }
 
     /**
@@ -55,8 +55,8 @@ class ComponentMapperTest {
      */
     @Test
     final void testToWsSearchRequest() {
-	SearchRequest wsSearch = mapper.toWsSearchRequest(expectedSearchComponent);
-	assertThat(expectedWsSearch).isEqualToComparingFieldByField(wsSearch);
+	SearchRequest actual = mapper.toWsSearchRequest(expectedSearchComponent);
+	assertThat(expectedWsSearch).isEqualToComparingFieldByField(actual);
     }
 
     /**
@@ -65,8 +65,8 @@ class ComponentMapperTest {
      */
     @Test
     final void testToComponentDTO() {
-	ComponentDTO componentDTO = mapper.toComponentDTO(expectedWsComponent);
-	assertThat(expectedComponentDTO).isEqualToComparingFieldByField(componentDTO);
+	ComponentDTO actual = mapper.toComponentDTO(expectedWsComponent);
+	assertThat(expectedComponentDTO).isEqualToComparingFieldByField(actual);
     }
 
     /**
@@ -75,8 +75,8 @@ class ComponentMapperTest {
      */
     @Test
     final void testToWsComponent() {
-	Component wsComponent = mapper.toWsComponent(expectedComponentDTO);
-	assertThat(expectedWsComponent).isEqualToComparingFieldByField(wsComponent);
+	Component actual = mapper.toWsComponent(expectedComponentDTO);
+	assertThat(expectedWsComponent).isEqualToComparingFieldByField(actual);
     }
 
 }

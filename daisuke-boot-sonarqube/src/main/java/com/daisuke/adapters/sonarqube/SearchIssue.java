@@ -57,20 +57,18 @@ public class SearchIssue {
      */
 
     private List<String> author;
-    /**
-     * Example value: "feature/my_branch"
-     */
-    private String branch;
+
     /**
      * Example value: "my_project"
      */
     private List<String> componentKeys;
+
     /**
      * Example value: "2017-10-19 or 2017-10-19T13:00:00+0200"
      */
     private String createdAt;
     /**
-     * Example value: "2017-10-19 or 2017-10-19T13:00:00+0200"
+     * Example value: "1m2w (1 month 2 weeks)"
      */
     private String createdInLast;
     /**
@@ -81,14 +79,6 @@ public class SearchIssue {
      * Example value: "src/main/java/org/sonar/server/"
      */
     private List<String> directories;
-    /**
-     * Possible values:
-     * <ul>
-     * <li>"count"</li>
-     * <li>"effort"</li>
-     * </ul>
-     */
-    private String facetMode;
 
     /**
      * Possible values:
@@ -119,10 +109,6 @@ public class SearchIssue {
      */
     private List<String> facets;
     /**
-     * Example value: "bdd82933-3070-4903-9188-7d8749e8bb92"
-     */
-    private List<String> fileUuids;
-    /**
      * Example value: "5bccd6e8-f525-43a2-8d76-fcb13dde79ef"
      */
     private List<String> issues;
@@ -131,9 +117,9 @@ public class SearchIssue {
      */
     private List<String> languages;
     /**
-     * Example value: "my-org"
+     * Possible values: true/false/yes/no
      */
-    private String organization;
+    private String onComponentOnly;
     /**
      * Possible values:
      * <ul>
@@ -155,20 +141,14 @@ public class SearchIssue {
      * Example value: "42"
      */
     private String page;
-    /**
-     * Example value: "my_project"
-     */
-    private List<String> projects;
+
     /**
      * Number of items allowed for each page. Max items = 500<br/>
      * 
      * Example value: "20"
      */
     private String pageSize;
-    /**
-     * Example value: "5461"
-     */
-    private String pullRequest;
+
     /**
      * Example value: "FIXED,REMOVED" Possible values:
      * <ul>
@@ -187,6 +167,22 @@ public class SearchIssue {
      * Example value: "squid:AvoidCycles"
      */
     private List<String> rules;
+
+    /**
+     * Possible values:
+     * <ul>
+     * <li>"CREATION_DATE"</li>
+     * <li>"UPDATE_DATE"</li>
+     * <li>"CLOSE_DATE"</li>
+     * <li>"CLOSE_DATE"</li>
+     * <li>"ASSIGNEE"</li>
+     * <li>"SEVERITY"</li>
+     * <li>"STATUS"</li>
+     * <li>"FILE_LINE"</li>
+     * </ul>
+     */
+    private String sortField;
+
     /**
      * Possible values:
      * <ul>
@@ -218,6 +214,38 @@ public class SearchIssue {
      * </ul>
      */
     private List<String> statuses;
+
+    /**
+     * Possible values: true/false/yes/no
+     */
+    private String sinceLeakPeriod;
+    /**
+     * Example value: "sql-injection,command-injection" Possible values:
+     * <ul>
+     * <li>"sql-injection"</li>
+     * <li>"command-injection"</li>
+     * <li>"path-traversal-injection"</li>
+     * <li>"ldap-injection"</li>
+     * <li>"xpath-injection"</li>
+     * <li>"expression-lang-injection"</li>
+     * <li>"rce"</li>
+     * <li>"dos"</li>
+     * <li>"ssrf"</li>
+     * <li>"csrf"</li>
+     * <li>"xss"</li>
+     * <li>"log-injection"</li>
+     * <li>"http-response-splitting"</li>
+     * <li>"open-redirect"</li>
+     * <li>"xxe"</li>
+     * <li>"object-injection"</li>
+     * <li>"weak-cryptography"</li>
+     * <li>"auth"</li>
+     * <li>"insecure-conf"</li>
+     * <li>"file-manipulation"</li>
+     * </ul>
+     */
+    private List<String> sonarsourceSecurity;
+
     /**
      * Example value: "security,convention"
      */

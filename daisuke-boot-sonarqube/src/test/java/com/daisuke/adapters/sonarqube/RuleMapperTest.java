@@ -15,13 +15,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mapstruct.factory.Mappers;
-import org.sonarqube.ws.Common.RuleType;
 import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.client.rules.SearchRequest;
 
 import com.daisuke.domain.model.RuleDTO;
-import com.daisuke.domain.model.SeverityEnum;
-import com.daisuke.domain.model.TypeEnum;
 
 /**
  * @author Andrea M.
@@ -47,7 +44,7 @@ class RuleMapperTest {
 	mapper = Mappers.getMapper(RuleMapper.class);
 	expectedWsSearch = getWsSearch();
 	expectedSearchRule = getSearchRule();
-	expectedRuleDTO =getRuleDTO();
+	expectedRuleDTO = getRuleDTO();
 	expectedRuleDTOList = randomRuleDTOList(10);
 	expectedRuleList = randomRuleList(10);
 	expectedWsRule = getWsRule();
@@ -74,8 +71,8 @@ class RuleMapperTest {
      */
     @Test
     final void testToSearchRule() {
-	SearchRule search = mapper.toSearchRule(expectedWsSearch);
-	assertThat(expectedSearchRule).isEqualToComparingFieldByField(search);
+	SearchRule actual = mapper.toSearchRule(expectedWsSearch);
+	assertThat(expectedSearchRule).isEqualToComparingFieldByField(actual);
     }
 
     /**
@@ -84,8 +81,8 @@ class RuleMapperTest {
      */
     @Test
     final void testToWsSearchRequest() {
-	SearchRequest wsSearch = mapper.toWsSearchRequest(expectedSearchRule);
-	assertThat(expectedWsSearch).isEqualToComparingFieldByField(wsSearch);
+	SearchRequest actual = mapper.toWsSearchRequest(expectedSearchRule);
+	assertThat(expectedWsSearch).isEqualToComparingFieldByField(actual);
     }
 
     /**
@@ -94,8 +91,8 @@ class RuleMapperTest {
      */
     @Test
     final void testToRuleDTO() {
-	RuleDTO ruleDTO = mapper.toRuleDTO(expectedWsRule);
-	assertThat(expectedRuleDTO).isEqualTo(ruleDTO);
+	RuleDTO actual = mapper.toRuleDTO(expectedWsRule);
+	assertThat(expectedRuleDTO).isEqualTo(actual);
     }
 
     /**
@@ -104,8 +101,8 @@ class RuleMapperTest {
      */
     @Test
     final void testToRuleDTOList() {
-	List<RuleDTO> list = mapper.toRuleDTOList(expectedRuleList);
-	assertThat(expectedRuleDTOList).isEqualTo(list);
+	List<RuleDTO> actual = mapper.toRuleDTOList(expectedRuleList);
+	assertThat(expectedRuleDTOList).isEqualTo(actual);
     }
 
     /**
@@ -114,8 +111,8 @@ class RuleMapperTest {
      */
     @Test
     final void testToWsRule() {
-	Rule rule = mapper.toWsRule(expectedRuleDTO);
-	assertThat(expectedWsRule).isEqualToComparingFieldByField(rule);
+	Rule actual = mapper.toWsRule(expectedRuleDTO);
+	assertThat(expectedWsRule).isEqualToComparingFieldByField(actual);
     }
 
 }

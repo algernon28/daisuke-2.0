@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.daisuke.boot</groupId>
-		<artifactId>daisuke-boot-2.0</artifactId>
+		<artifactId>daisuke-boot-V2</artifactId>
 		<version>[0.9]</version>
 	</parent>
 	<groupId>com.daisuke.boot.jpa</groupId>

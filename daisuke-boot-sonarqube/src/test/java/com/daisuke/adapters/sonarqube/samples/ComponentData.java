@@ -42,7 +42,7 @@ public abstract class ComponentData {
 	    this.description = description;
 	}
     }
-
+    
     public enum QUALIFIERS_VALUES {
 	APP("Applications"), BRC("Sub-projects"), DIR("Directories"), FIL("Files"), SVW("Portfolios"), TRK("Projects"),
 	UTS("Test Files"), VW("Portfolios");
