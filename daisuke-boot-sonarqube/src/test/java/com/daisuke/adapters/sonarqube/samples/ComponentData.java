@@ -18,42 +18,14 @@ import org.sonarqube.ws.client.components.SearchRequest;
 import com.daisuke.adapters.sonarqube.SearchComponent;
 import com.daisuke.domain.model.ComponentDTO;
 import com.daisuke.domain.model.ComponentDTO.Measure;
+import com.daisuke.domain.model.LanguageEnum;
 import com.daisuke.domain.model.MeasureEnum;
-import com.daisuke.domain.model.SeverityEnum;
-import com.daisuke.domain.model.TypeEnum;
 
-public abstract class ComponentData {
-    public enum LANGUAGE_VALUES {
-	ABAP("abap", "ABAP"), APEX("apex", "Apex"), CSHARP("cs", "C#"), CPP("cpp", "C++"), COBOL("cobol", "COBOL"),
-	CSS("css", "CSS"), FLEX("flex", "Flex"), GO("go", "Go"), HTML("web", "HTML"), JSP("jsp", "JSP"),
-	JAVA("java", "Java"), JAVASCRIPT("js", "JavaScript"), KOTLIN("kotlin", "Kotlin"),
-	OBJECTIVEC("objc", "Objective-C"), PHP("php", "PHP"), PLI("pli", "PL/I"), PLSQL("plsql", "PL/SQL"),
-	PYTHON("py", "Python"), RPG("rpg", "RPG"), RUBY("ruby", "Ruby"), SCALA("scala", "Scala"),
-	SWIFT("swift", "Swift"), TSQL("tsql", "T-SQL"), TYPESCRIPT("ts", "TypeScript"), VBNET("vbnet", "VB.NET"),
-	XML("xml", "XML");
+import enumerations.ComponentEnumerations;
 
-	@SuppressWarnings("unused")
-	private String key;
-	@SuppressWarnings("unused")
-	private String description;
+public abstract class ComponentData implements ComponentEnumerations{
 
-	private LANGUAGE_VALUES(String key, String description) {
-	    this.key = key;
-	    this.description = description;
-	}
-    }
-    
-    public enum QUALIFIERS_VALUES {
-	APP("Applications"), BRC("Sub-projects"), DIR("Directories"), FIL("Files"), SVW("Portfolios"), TRK("Projects"),
-	UTS("Test Files"), VW("Portfolios");
 
-	@SuppressWarnings("unused")
-	private String description;
-
-	private QUALIFIERS_VALUES(String description) {
-	    this.description = description;
-	}
-    }
 
     public static class SearchSample extends CommonDataSample {
 	private static List<String> randomQualifiers = randomEnumStringList(2, QUALIFIERS_VALUES.values());
@@ -87,7 +59,7 @@ public abstract class ComponentData {
 	private static String randomQualifier = randomEnumString(QUALIFIERS_VALUES.values());
 	private static String randomPath = randomString(100, false);
 	private static String randomAnalysisDate = randomDate(1999, 2019);
-	private static String randomLanguage = randomEnumString(LANGUAGE_VALUES.values());
+	private static String randomLanguage = randomEnumString(LanguageEnum.values());
 	private static int randomLinesOfCode = RandomUtils.nextInt(100, 1000000);
 	private static BigDecimal randomCQI = BigDecimal.valueOf(RandomUtils.nextDouble(0, 10));
 	private static Measure measureValue = new Measure().setEffort(RandomUtils.nextFloat(0, 100))

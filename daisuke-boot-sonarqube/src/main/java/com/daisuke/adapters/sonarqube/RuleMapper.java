@@ -50,6 +50,9 @@ public interface RuleMapper {
     @Mapping(target = "description", source = "htmlDesc")
     @Mapping(target = "type", source = "type")
     @Mapping(target = "severity", source = "severity")
+    @Mapping(target = "tags", source = "tags")
+    @Mapping(target = "language.key", source = "lang")
+    @Mapping(target = "language.description", source = "langName")
     RuleDTO toRuleDTO(Rule wsRule);
 
     List<RuleDTO> toRuleDTOList(List<Rule> wsRules);

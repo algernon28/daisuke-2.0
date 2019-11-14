@@ -20,42 +20,9 @@ import com.daisuke.domain.model.RuleDTO;
 import com.daisuke.domain.model.SeverityEnum;
 import com.daisuke.domain.model.TypeEnum;
 
-public abstract class RuleData {
+import enumerations.RuleEnumerations;
 
-    public enum F_VALUES {
-	actives, createdAt, debtOverloaded, debtRemFn, defaultDebtRemFn, defaultRemFn, effortToFixDescription,
-	gapDescription, htmlDesc, htmlNote, internalKey, isExternal, isTemplate, lang, langName, mdDesc, mdNote, name,
-	noteLogin, params, remFn, remFnOverloaded, repo, scope, severity, status, sysTags, tags, templateKey, updatedAt
-    };
-
-    public enum FACETS_VALUES {
-	LANGUAGES("languages"), REPOSITORIES("repositories"), TAGS("tags"), SEVERITIES("severities"),
-	ACTIVE_SEVERITIES("active_severities"), STATUSES("statuses"), TYPES("types"), TRUE("true"), CWE("cwe"),
-	OWASPTOP10("owaspTop10"), SANSTOP25("sansTop25"), SONARSOURCE_SECURITY("sonarsourceSecurity");
-
-	@SuppressWarnings("unused")
-	private String description;
-
-	private FACETS_VALUES(String description) {
-	    this.description = description;
-	}
-    };
-
-    public enum INHERITANCE_VALUES {
-	NONE, INHERITED, OVERRIDES
-    };
-
-    public enum S_VALUES {
-	name, updatedAt, createdAt, key
-    }
-
-    public enum REPOSITORIES_VALUES {
-	checkstyle, findbugs, sonarlint, pycharm, stylecop, codacy
-    }
-
-    public enum STATUSES_VALUES {
-	BETA, DEPRECATED, READY, REMOVED
-    }
+public abstract class RuleData implements RuleEnumerations{
 
     private RuleData() {
 
@@ -114,22 +81,21 @@ public abstract class RuleData {
 	private static String randomDate = randomDate(1999, 2019);
 	private static List<String> randomCwe = Collections
 		.unmodifiableList(Arrays.asList("rule" + randomNumber(1, 100), "rule2" + randomNumber(1, 100)));
-	private static List<String> randomFields = randomEnumStringList(4, F_VALUES.values());
-	private static List<String> randomFacets = randomEnumStringList(2, FACETS_VALUES.values());
-	private static List<String> randomInheritance = randomEnumStringList(2, INHERITANCE_VALUES.values());
+	private static List<String> randomFields = randomEnumStringList(4, FIELDS_TO_BE_RETURNED.values());
+	private static List<String> randomFacets = randomEnumStringList(2, FACETS.values());
+	private static List<String> randomInheritance = randomEnumStringList(2, INHERITANCE.values());
 	private static String randomIncludeExt = randomSonarBOOL();
 	private static String randomIsTemplate = randomSonarBOOL();
-	private static List<String> randomOwaspTop10 = randomEnumStringList(3, OWASPTOP10_VALUES.values());
+	private static List<String> randomOwaspTop10 = randomEnumStringList(3, OWASPTOP10.values());
 	private static String randomUtf8Query = String.format("xpath - %s", randomNumber(1, 1000));
 	private static String randomQProfile = String.format("profile-%s", randomString(5, true));
-	private static List<String> randomRepositories = randomEnumStringList(2, REPOSITORIES_VALUES.values());
+	private static List<String> randomRepositories = randomEnumStringList(2, REPOSITORIES.values());
 	private static String randomRuleKey = String.format("squid:%s", randomString(4, true));
-	private static String randomSortField = randomEnumString(S_VALUES.values());
-	private static List<String> randomSansTop25 = randomEnumStringList(2, SANSTOP25_VALUES.values());
+	private static String randomSortField = randomEnumString(SORT_FIELD.values());
+	private static List<String> randomSansTop25 = randomEnumStringList(2, SANSTOP25.values());
 	private static List<String> randomSeverities = randomEnumStringList(2, SeverityEnum.values());
-	private static List<String> randomSonarsourceSecurity = randomEnumStringList(2,
-		SONARSOURCE_SECURITY_VALUES.values());
-	private static List<String> randomStatuses = randomEnumStringList(2, STATUSES_VALUES.values());
+	private static List<String> randomSonarsourceSecurity = randomEnumStringList(2, SONARSOURCE_SECURITY.values());
+	private static List<String> randomStatuses = randomEnumStringList(2, STATUSES.values());
 	private static List<String> randomTags = Collections.unmodifiableList(Arrays.asList("tag1", "tag2"));
 	private static String randomTemplateKey = randomString(10, true);
 	private static List<String> randomTypes = randomEnumStringList(1, TypeEnum.values());

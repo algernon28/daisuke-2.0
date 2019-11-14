@@ -1,5 +1,7 @@
 package com.daisuke.domain.model;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,4 +17,6 @@ public class RuleDTO {
     private TypeEnum type;
     private SeverityEnum severity;
     private Integer occurrencies; 
+    private List<String> tags;
+    private LanguageEnum language; 
 }

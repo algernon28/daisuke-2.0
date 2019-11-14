@@ -30,7 +30,6 @@ public class SonarQubeIssueService implements IssuesAdapter<SearchIssue> {
     
     @Override
     public List<IssueDTO> findIssues(SearchIssue search) throws SearchException {
-	// TODO Auto-generated method stub
 	return null;
     }
 

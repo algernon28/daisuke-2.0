@@ -3,10 +3,10 @@ package com.daisuke.adapters.sonarqube;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 import com.daisuke.adapters.sonarqube.config.SonarQubeConfiguration;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

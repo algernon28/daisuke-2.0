@@ -8,13 +8,17 @@ import org.sonarqube.ws.Rules;
 import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.client.rules.RulesService;
 import org.sonarqube.ws.client.rules.SearchRequest;
+
 import com.daisuke.domain.adapters.RulesAdapter;
 import com.daisuke.domain.adapters.SearchException;
 import com.daisuke.domain.model.RuleDTO;
+
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
+@Data
 @Slf4j
 public class SonarQubeRulesService implements RulesAdapter<SearchRule> {
 

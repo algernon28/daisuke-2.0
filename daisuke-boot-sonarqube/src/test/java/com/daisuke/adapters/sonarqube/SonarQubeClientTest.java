@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.daisuke.adapters.sonarqube;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -35,7 +32,7 @@ import com.daisuke.domain.adapters.SearchException;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
-
+import static com.daisuke.adapters.sonarqube.Constants.*;
 /**
  * @author Andrea M.
  *
@@ -50,8 +47,7 @@ class SonarQubeClientTest {
     private ComponentsService componentsService;
     private MeasuresService measuresService;
     private WireMockServer wmServer;
-    private static final String AUTH_LOGIN = "/api/authentication/login";
-    private static final String AUTH_VALIDATION = "/api/authentication/validate";
+
 
     /**
      * @throws java.lang.Exception
