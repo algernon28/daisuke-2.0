@@ -10,7 +10,7 @@ import org.sonarqube.ws.client.issues.SearchRequest;
 
 import com.daisuke.domain.model.IssueDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface IssueMapper {
 
     @Mapping(target = "additionalFields", source = "additionalFields")

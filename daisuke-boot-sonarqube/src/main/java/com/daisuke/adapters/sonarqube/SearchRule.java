@@ -229,10 +229,7 @@ public class SearchRule {
      * </ul>
      */
     private List<String> statuses;
-    /**
-     * Example value: "security,java8"
-     */
-    private List<String> tags;
+
     /**
      * Example value: "java:S001"
      */

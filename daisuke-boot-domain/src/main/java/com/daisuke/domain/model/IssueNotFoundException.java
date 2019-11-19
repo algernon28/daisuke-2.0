@@ -1,6 +1,8 @@
 package com.daisuke.domain.model;
 
-public class IssueNotFoundException extends Exception {
+import com.daisuke.domain.adapters.SearchException;
+
+public class IssueNotFoundException extends SearchException {
 
     /**
      * 

@@ -7,10 +7,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.sonarqube.ws.Components.Component;
 import org.sonarqube.ws.client.components.SearchRequest;
+import org.sonarqube.ws.client.components.ShowRequest;
 
 import com.daisuke.domain.model.ComponentDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ComponentMapper {
 
     @Mapping(target = "language", source = "language")
@@ -22,7 +23,13 @@ public interface ComponentMapper {
     SearchComponent toSearchComponent(SearchRequest wsRequest);
 
     @InheritInverseConfiguration(name = "toSearchComponent")
-    SearchRequest toWsSearchRequest(SearchComponent search);
+    SearchRequest toWsSearchRequest(SearchComponent search); 
+
+    @Mapping(target = "componentKey", source = "component")
+    ShowComponent toShowComponent(ShowRequest wsRequest);
+
+    @InheritInverseConfiguration(name = "toShowComponent")
+    ShowRequest toWsShowRequest(ShowComponent search); 
 
     @Mapping(target = "key", source = "key")
     @Mapping(target = "refKey", source = "refKey")
@@ -36,7 +43,7 @@ public interface ComponentMapper {
     @Mapping(target = "language", source = "language")
     ComponentDTO toComponentDTO(Component wsComponent);
 
-    @InheritInverseConfiguration(name = "toComponentDTO")
+    @InheritInverseConfiguration(name = "toComponentDTO") 
     Component toWsComponent(ComponentDTO componentDTO);
 
     List<ComponentDTO> toComponentDTOList(List<Component> wsComponents);

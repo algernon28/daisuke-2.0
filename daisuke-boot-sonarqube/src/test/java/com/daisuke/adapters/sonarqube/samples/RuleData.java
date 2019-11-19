@@ -1,28 +1,27 @@
 package com.daisuke.adapters.sonarqube.samples;
 
-import static com.daisuke.adapters.sonarqube.Utils.randomDate;
-import static com.daisuke.adapters.sonarqube.Utils.randomEnumStringList;
-import static com.daisuke.adapters.sonarqube.Utils.randomEnumString;
-import static com.daisuke.adapters.sonarqube.Utils.randomNumber;
-import static com.daisuke.adapters.sonarqube.Utils.randomSonarBOOL;
-import static com.daisuke.adapters.sonarqube.Utils.randomString;
+import static com.daisuke.adapters.sonarqube.Utils.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.sonarqube.ws.Common.RuleStatus;
 import org.sonarqube.ws.Common.RuleType;
+import org.sonarqube.ws.Common.Severity;
 import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.client.rules.SearchRequest;
 
 import com.daisuke.adapters.sonarqube.SearchRule;
+import com.daisuke.adapters.sonarqube.Utils;
+import com.daisuke.domain.model.LanguageEnum;
 import com.daisuke.domain.model.RuleDTO;
 import com.daisuke.domain.model.SeverityEnum;
 import com.daisuke.domain.model.TypeEnum;
 
 import enumerations.RuleEnumerations;
 
-public abstract class RuleData implements RuleEnumerations{
+public abstract class RuleData implements RuleEnumerations {
 
     private RuleData() {
 
@@ -58,14 +57,31 @@ public abstract class RuleData implements RuleEnumerations{
 	}
 
 	public static RuleDTO getRuleDTO() {
-	    RuleDTO result = new RuleDTO().setDescription(description).setKey(key)
+	    RuleDTO result = new RuleDTO().setDescription(description).setKey(key).setLanguage(randomLanguage())
 		    .setSeverity(SeverityEnum.valueOf(severity)).setType(TypeEnum.valueOf(type));
 	    return result;
 	}
 
 	public static Rule getWsRule() {
-	    Rule result = Rule.newBuilder().setHtmlDesc(description).setKey(key).setSeverity(severity)
-		    .setType(RuleType.valueOf(type)).build();
+	    String desc = randomString(50, true);
+	    String key = randomString(10, true);
+	    LanguageEnum lang = randomLanguage();
+	    String name = randomString(15, false);
+	    String repo = randomEnumString(REPOSITORIES.values());
+	    String severity = randomEnumString(Severity.values()); 
+	    RuleType type = RuleType.valueOf(randomEnumString(RuleType.values()));
+	    RuleStatus status = RuleStatus.valueOf(randomEnumString(RuleStatus.values()));
+	    Rule result = Rule.newBuilder().setCreatedAt(Utils.randomDate(2018, 2019)).setGapDescription("XYZ")
+		    .setHtmlDesc(desc).setKey(key).setLang(lang.name()).setName(name)
+		    .setRepo(repo).setSeverity(severity).setStatus(status).setType(type).build();
+	    return result;
+	}
+
+	public static List<Rule> getWsRuleList(int size) {
+	    List<Rule> result = new ArrayList<>();
+	    for (int i = 0; i < size; i++) {
+		result.add(getWsRule());
+	    }
 	    return result;
 	}
 
@@ -96,7 +112,6 @@ public abstract class RuleData implements RuleEnumerations{
 	private static List<String> randomSeverities = randomEnumStringList(2, SeverityEnum.values());
 	private static List<String> randomSonarsourceSecurity = randomEnumStringList(2, SONARSOURCE_SECURITY.values());
 	private static List<String> randomStatuses = randomEnumStringList(2, STATUSES.values());
-	private static List<String> randomTags = Collections.unmodifiableList(Arrays.asList("tag1", "tag2"));
 	private static String randomTemplateKey = randomString(10, true);
 	private static List<String> randomTypes = randomEnumStringList(1, TypeEnum.values());
 
@@ -109,7 +124,7 @@ public abstract class RuleData implements RuleEnumerations{
 		    .setOwaspTop10(randomOwaspTop10).setP(randomPage).setPs(randomPageSize).setQ(randomUtf8Query)
 		    .setQprofile(randomQProfile).setRepositories(randomRepositories).setRuleKey(randomRuleKey)
 		    .setS(randomSortField).setSansTop25(randomSansTop25).setSeverities(randomSeverities)
-		    .setSonarsourceSecurity(randomSonarsourceSecurity).setStatuses(randomStatuses).setTags(randomTags)
+		    .setSonarsourceSecurity(randomSonarsourceSecurity).setStatuses(randomStatuses)
 		    .setTemplateKey(randomTemplateKey).setTypes(randomTypes);
 	    return result;
 	}
@@ -124,7 +139,7 @@ public abstract class RuleData implements RuleEnumerations{
 		    .setPageSize(randomPageSize).setUtf8Query(randomUtf8Query).setQprofile(randomQProfile)
 		    .setRepositories(randomRepositories).setRuleKey(randomRuleKey).setSortField(randomSortField)
 		    .setSansTop25(randomSansTop25).setSeverities(randomSeverities)
-		    .setSonarsourceSecurity(randomSonarsourceSecurity).setStatuses(randomStatuses).setTags(randomTags)
+		    .setSonarsourceSecurity(randomSonarsourceSecurity).setStatuses(randomStatuses)
 		    .setTemplateKey(randomTemplateKey).setTypes(randomTypes);
 	    return result;
 	}

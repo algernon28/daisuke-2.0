@@ -1,4 +1,4 @@
-package com.daisuke.adapters.sonarqube;
+package com.daisuke.domain.model;
 
 import com.daisuke.domain.adapters.SearchException;
 

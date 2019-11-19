@@ -128,6 +128,14 @@ public class IssueData implements IssueEnumerations {
 	    return result;
 	}
 
+	public static List<Issue> getWsIssueList(int size) {
+	    List<Issue> result = new ArrayList<>();
+	    for (int i = 0; i < size; i++) {
+		result.add(getWsIssue());
+	    }
+	    return result;
+	}
+
 	public static IssueDTO getIssueDTO() {
 	    IssueDTO result = new IssueDTO().setAssignee(randomAssignee).setAuthor(randomAuthor)
 		    .setCloseDate(randomCloseDate).setComponent(randomComponent).setEffort(randomEffort)

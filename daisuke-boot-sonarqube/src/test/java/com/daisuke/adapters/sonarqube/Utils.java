@@ -170,8 +170,8 @@ public class Utils {
     public static Rule randomRule(Rule template) {
 	Rule.Builder builder;
 	String description = randomStringWithTemplate(template.getHtmlDesc(), 15);
-	String language = randomLanguage().key();
-	String languageName = randomLanguage().description();
+	String language = randomLanguage().name();
+	String languageName = randomLanguage().getDescription();
 	String key = randomStringWithTemplate(template.getKey(), 20);
 	String name = randomStringWithTemplate(template.getName(), 20);
 	RuleType type = Optional.ofNullable(template.getType()).orElse(RuleType.valueOf(randomType().name()));

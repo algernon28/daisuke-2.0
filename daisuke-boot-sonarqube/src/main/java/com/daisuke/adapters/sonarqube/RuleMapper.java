@@ -10,7 +10,7 @@ import org.sonarqube.ws.client.rules.SearchRequest;
 
 import com.daisuke.domain.model.RuleDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface RuleMapper {
 
     @Mapping(target = "activation", source = "activation")
@@ -38,7 +38,6 @@ public interface RuleMapper {
     @Mapping(target = "severities", source = "severities")
     @Mapping(target = "sonarsourceSecurity", source = "sonarsourceSecurity")
     @Mapping(target = "statuses", source = "statuses")
-    @Mapping(target = "tags", source = "tags")
     @Mapping(target = "templateKey", source = "templateKey")
     @Mapping(target = "types", source = "types")
     SearchRule toSearchRule(SearchRequest wsRequest);
@@ -50,13 +49,14 @@ public interface RuleMapper {
     @Mapping(target = "description", source = "htmlDesc")
     @Mapping(target = "type", source = "type")
     @Mapping(target = "severity", source = "severity")
-    @Mapping(target = "tags", source = "tags")
-    @Mapping(target = "language.key", source = "lang")
-    @Mapping(target = "language.description", source = "langName")
+    @Mapping(target = "language.name", source = "lang")
+    @Mapping(target = "language.description", ignore = true)
     RuleDTO toRuleDTO(Rule wsRule);
 
     List<RuleDTO> toRuleDTOList(List<Rule> wsRules);
 
     @InheritInverseConfiguration(name = "toRuleDTO")
+    @Mapping(target = "langName", source = "language.description")
     Rule toWsRule(RuleDTO ruleDTO);
+
 }

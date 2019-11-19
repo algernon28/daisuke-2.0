@@ -1,28 +1,18 @@
 package com.daisuke.domain.model;
 
+import lombok.Getter;
+
 public enum LanguageEnum {
 
-    ABAP("abap", "ABAP"), APEX("apex", "Apex"), CSHARP("cs", "C#"), CPP("cpp", "C++"), COBOL("cobol", "COBOL"),
-    CSS("css", "CSS"), FLEX("flex", "Flex"), GO("go", "Go"), HTML("web", "HTML"), JSP("jsp", "JSP"),
-    JAVA("java", "Java"), JAVASCRIPT("js", "JavaScript"), KOTLIN("kotlin", "Kotlin"), OBJECTIVEC("objc", "Objective-C"),
-    PHP("php", "PHP"), PLI("pli", "PL/I"), PLSQL("plsql", "PL/SQL"), PYTHON("py", "Python"), RPG("rpg", "RPG"),
-    RUBY("ruby", "Ruby"), SCALA("scala", "Scala"), SWIFT("swift", "Swift"), TSQL("tsql", "T-SQL"),
-    TYPESCRIPT("ts", "TypeScript"), VBNET("vbnet", "VB.NET"), XML("xml", "XML");
-    private String key;
+    abap("ABAP"), apex("Apex"), cs("C#"), CPP("C++"), cobol("COBOL"), css("CSS"), flex("Flex"), go("Go"), HTML("HTML"),
+    jsp("JSP"), java("Java"), js("JavaScript"), kotlin("Kotlin"), objc("Objective-C"), php("PHP"), pli("PL/I"),
+    plsql("PL/SQL"), py("Python"), RPG("RPG"), ruby("Ruby"), scala("Scala"), swift("Swift"), tsql("T-SQL"),
+    ts("TypeScript"), vbnet("VB.NET"), xml("XML");
 
+    @Getter
     private String description;
 
-    LanguageEnum(String key, String description) {
-	this.key = key;
+    LanguageEnum(String description) {
 	this.description = description;
     }
-
-    public String key() {
-	return key;
-    }
-
-    public String description() {
-	return description;
-    }
-
 }

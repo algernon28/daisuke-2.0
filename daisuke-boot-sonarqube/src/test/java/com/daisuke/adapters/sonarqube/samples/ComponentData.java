@@ -9,9 +9,11 @@ import static com.daisuke.adapters.sonarqube.Utils.randomString;
 import static com.daisuke.adapters.sonarqube.Utils.randomType;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sonarqube.ws.Components.Component;
 import org.sonarqube.ws.client.components.SearchRequest;
 
@@ -20,12 +22,13 @@ import com.daisuke.domain.model.ComponentDTO;
 import com.daisuke.domain.model.ComponentDTO.Measure;
 import com.daisuke.domain.model.LanguageEnum;
 import com.daisuke.domain.model.MeasureEnum;
+import com.google.common.base.Optional;
 
 import enumerations.ComponentEnumerations;
+import lombok.extern.slf4j.Slf4j;
 
-public abstract class ComponentData implements ComponentEnumerations{
-
-
+@Slf4j
+public abstract class ComponentData implements ComponentEnumerations {
 
     public static class SearchSample extends CommonDataSample {
 	private static List<String> randomQualifiers = randomEnumStringList(2, QUALIFIERS_VALUES.values());
@@ -34,8 +37,7 @@ public abstract class ComponentData implements ComponentEnumerations{
 
 	public static SearchRequest getWsSearch() {
 	    SearchRequest result = new SearchRequest().setLanguage(randomLanguage).setOrganization(randomOrganization)
-		    .setP(randomPage).setPs(randomPageSize).setQ(randomSearchFilter)
-		    .setQualifiers(randomQualifiers);
+		    .setP(randomPage).setPs(randomPageSize).setQ(randomSearchFilter).setQualifiers(randomQualifiers);
 	    return result;
 	}
 
@@ -68,10 +70,49 @@ public abstract class ComponentData implements ComponentEnumerations{
 	private static MeasureEnum measureKey = randomMeasure();
 
 	public static Component getWsComponent() {
-	    Component result = Component.newBuilder().setLanguage(randomLanguage).setAnalysisDate(randomAnalysisDate)
-		    .setDescription(randomDescription).setKey(randomKey).setName(randomName).setOrganization(randomOrganization)
-		    .setProjectId(randomProjectId).setRefKey(randomRefKey).setQualifier(randomQualifier)
-		    .setPath(randomPath).build();
+	    Component result = Component.newBuilder().build();
+	    return getWsComponent(result);
+	}
+
+	public static Component getWsComponent(Component prototype) {
+	    String language = !StringUtils.isBlank(prototype.getLanguage()) ? prototype.getLanguage()
+		    : randomLanguage;
+	    String analysisDate = !StringUtils.isBlank(prototype.getAnalysisDate())? prototype.getAnalysisDate()
+		    : randomAnalysisDate;
+	    String description = !StringUtils.isBlank(prototype.getDescription()) ? prototype.getDescription()
+		    : randomDescription;
+	    String key = !StringUtils.isBlank(prototype.getKey()) ? prototype.getKey() : randomName;
+	    String name = !StringUtils.isBlank(prototype.getName()) ? prototype.getName() : randomName;
+	    String organization = !StringUtils.isBlank(prototype.getOrganization()) ? prototype.getOrganization()
+		    : randomOrganization;
+	    String projectId = !StringUtils.isBlank(prototype.getProjectId()) ? prototype.getProjectId()
+		    : randomProjectId;
+	    String refKey = !StringUtils.isBlank(prototype.getRefKey()) ? prototype.getRefKey() : randomRefKey;
+	    String qualifier = !StringUtils.isBlank(prototype.getQualifier()) ? prototype.getQualifier()
+		    : randomQualifier;
+	    String path = !StringUtils.isBlank(prototype.getPath()) ? prototype.getPath() : randomPath;
+	    Component result = Component.newBuilder().setLanguage(language).setAnalysisDate(analysisDate)
+		    .setDescription(description).setKey(key).setName(name).setOrganization(organization)
+		    .setProjectId(projectId).setRefKey(refKey).setQualifier(qualifier).setPath(path).build();
+	    log.debug("returning {}", result);
+	    return result;
+	}
+
+	public static List<Component> getWsComponentList(int size) {
+	    return getWsComponentList(null, size);
+	}
+
+	public static List<Component> getWsComponentList(Component prototype, int size) {
+	    List<Component> result = new ArrayList<>();
+	    for (int i = 0; i < size; i++) {
+		Component comp = null;
+		if (Optional.of(prototype).isPresent()) {
+		    comp = getWsComponent(prototype);
+		} else {
+		    comp = getWsComponent();
+		}
+		result.add(comp);
+	    }
 	    return result;
 	}
 

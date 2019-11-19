@@ -1,23 +1,16 @@
 package com.daisuke.adapters.sonarqube;
 
-import static com.daisuke.adapters.sonarqube.Utils.randomEnumString;
-import static com.daisuke.adapters.sonarqube.Utils.randomLanguage;
-import static com.daisuke.adapters.sonarqube.Utils.randomString;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.daisuke.adapters.sonarqube.Constants.RULESEARCH_URL;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.Assertions.assertThat;
-
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,26 +19,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mapstruct.factory.Mappers;
-import org.sonarqube.ws.Common.RuleStatus;
-import org.sonarqube.ws.Common.RuleType;
-import org.sonarqube.ws.Common.Severity;
 import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.Rules.SearchResponse;
-import org.sonarqube.ws.Rules.Tags;
-import org.springframework.integration.util.UUIDConverter;
-
 import com.daisuke.adapters.sonarqube.config.SonarQubeConfiguration;
+import com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample;
 import com.daisuke.domain.adapters.SearchException;
-import com.daisuke.domain.model.LanguageEnum;
 import com.daisuke.domain.model.RuleDTO;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
-
-import enumerations.RuleEnumerations.REPOSITORIES;
-import static com.daisuke.adapters.sonarqube.Constants.*;
 
 /**
  * @author Andrea M.
@@ -59,11 +42,8 @@ class SonarQubeRulesServiceTest {
     private RuleMapper mapper;
 
     private void wireMockInit() throws JSONException {
-	ResponseDefinitionBuilder response = aResponse().withBody(new JSONObject().put("valid", true).toString());
-	MappingBuilder searchBuilder = post(urlPathEqualTo(RULE_URL)).willReturn(response);
 	wmServer.addStubMapping(Constants.loginBuilder.build());
 	wmServer.addStubMapping(Constants.validationBuilder.build());
-	wmServer.addStubMapping(searchBuilder.withId(UUIDConverter.getUUID("search")).build());
     }
 
     /**
@@ -115,30 +95,17 @@ class SonarQubeRulesServiceTest {
 	assertThat(rulesService).isNotNull();
     }
 
-    private Rule randomRule() {
-	String desc = randomString(50, true);
-	String key = randomString(10, true);
-	LanguageEnum lang = randomLanguage();
-	String name = randomString(15, false);
-	String repo = randomEnumString(REPOSITORIES.values());
-	String severity = randomEnumString(Severity.values());
-	RuleType type = RuleType.valueOf(randomEnumString(RuleType.values()));
-	RuleStatus status = RuleStatus.valueOf(randomEnumString(RuleStatus.values()));
-	Tags tags = Tags.newBuilder().addTags("tag 1").addTags("tag 2").build();
-	Rule rule = Rule.newBuilder().setCreatedAt(Utils.randomDate(2018, 2019)).setGapDescription("XYZ")
-		.setHtmlDesc(desc).setKey(key).setLang(lang.key()).setLangName(lang.description()).setName(name)
-		.setRepo(repo).setSeverity(severity).setStatus(status).setTags(tags).setType(type).build();
-	return rule;
+    /**
+     * Test method for
+     * {@link com.daisuke.adapters.sonarqube.SonarQubeRulesService#setComponentMapper(com.daisuke.adapters.sonarqube.RuleMapper)}.
+     */
+    @Test
+    final void testSetComponentMapper() {
+	SonarQubeRulesService service = new SonarQubeRulesService();
+	service.setRuleMapper(mapper);
+	assertThat(mapper).isEqualTo(service.getRuleMapper());
     }
-
-    private List<Rule> prepareRuleData(int size) {
-	List<Rule> rules = new ArrayList<>();
-	for (int i = 0; i < size; i++) {
-	    rules.add(randomRule());
-	}
-	return rules;
-    }
-
+    
     /**
      * Test method for
      * {@link com.daisuke.adapters.sonarqube.SonarQubeRulesService#findRules(com.daisuke.adapters.sonarqube.SearchRule)}.
@@ -148,21 +115,20 @@ class SonarQubeRulesServiceTest {
     @Test
     final void testFindRules() throws SearchException {
 	int resultSize = 20;
-	List<Rule> rules = prepareRuleData(resultSize);
-	List<String> languages = rules.stream().flatMap(rule -> Stream.of(rule.getLang())).collect(Collectors.toList());
-	SearchResponse response = SearchResponse.newBuilder().addAllRules(rules).setTotal(resultSize).build();
+	List<Rule> wsRules = RuleSample.getWsRuleList(resultSize);
+	List<String> languages = wsRules.stream().flatMap(rule -> Stream.of(rule.getLang())).collect(Collectors.toList());
+	SearchResponse response = SearchResponse.newBuilder().addAllRules(wsRules).setTotal(resultSize).build();
 	SearchRule search = new SearchRule().setLanguages(languages);
 	String langParam = languages.stream().collect(Collectors.joining(","));
-	StubMapping mapping = get(urlPathEqualTo(RULE_URL)).withQueryParam("languages", new EqualToPattern(langParam))
+	StubMapping mapping = get(urlPathEqualTo(RULESEARCH_URL)).withQueryParam("languages", new EqualToPattern(langParam))
 		.build();
 	ResponseDefinitionBuilder builder = ResponseDefinitionBuilder.like(mapping.getResponse())
 		.withBody(response.toByteArray());
 	mapping.setResponse(builder.build());
 	wmServer.addStubMapping(mapping);
 	List<RuleDTO> actual = rulesService.findRules(search);
-	List<RuleDTO> expected = mapper.toRuleDTOList(rules);
+	List<RuleDTO> expected = mapper.toRuleDTOList(wsRules);
 	assertThat(expected).isEqualTo(actual);
-
     }
 
     /**
@@ -172,17 +138,17 @@ class SonarQubeRulesServiceTest {
      */
     @Test
     final void testFindRuleByKey() throws SearchException {
-	Rule rule = randomRule();
-	String ruleKey = rule.getKey();
-	StubMapping mapping = get(urlPathEqualTo(RULE_URL)).withQueryParam("rule_key", new EqualToPattern(ruleKey))
+	Rule wsRule = RuleSample.getWsRule();
+	String ruleKey = wsRule.getKey();
+	StubMapping mapping = get(urlPathEqualTo(RULESEARCH_URL)).withQueryParam("rule_key", new EqualToPattern(ruleKey))
 		.build();
-	SearchResponse response = SearchResponse.newBuilder().addRules(rule).setTotal(1L).build();
+	SearchResponse response = SearchResponse.newBuilder().addRules(wsRule).setTotal(1L).build();
 	ResponseDefinitionBuilder builder = ResponseDefinitionBuilder.like(mapping.getResponse())
 		.withBody(response.toByteArray());
 	mapping.setResponse(builder.build());
 	wmServer.addStubMapping(mapping);
 	RuleDTO actual = rulesService.findRuleByKey(ruleKey);
-	RuleDTO expected = mapper.toRuleDTO(rule);
+	RuleDTO expected = mapper.toRuleDTO(wsRule);
 	assertThat(expected).isEqualTo(actual);
     }
 

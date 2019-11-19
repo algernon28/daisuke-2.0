@@ -1,6 +1,8 @@
 package com.daisuke.domain.model;
 
-public class ComponentNotFoundException extends Exception {
+import com.daisuke.domain.adapters.SearchException;
+
+public class ComponentNotFoundException extends SearchException {
 
     private static final long serialVersionUID = -2964994367943592693L;
 
