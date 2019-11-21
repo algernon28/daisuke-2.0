@@ -39,7 +39,6 @@ public interface ComponentMapper {
     @Mapping(target = "projectId", source = "projectId")
     @Mapping(target = "qualifier", source = "qualifier")
     @Mapping(target = "path", source = "path")
-    @Mapping(target = "analysisDate", source = "analysisDate")
     @Mapping(target = "language", source = "language")
     ComponentDTO toComponentDTO(Component wsComponent);
 

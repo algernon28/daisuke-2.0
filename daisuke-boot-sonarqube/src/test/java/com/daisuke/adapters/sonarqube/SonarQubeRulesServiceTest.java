@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import static org.assertj.core.api.Assertions.assertThat;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -158,8 +159,8 @@ class SonarQubeRulesServiceTest {
      */
     @Test
     final void testSonarQubeRulesService() {
-	SonarQubeRulesService service = new SonarQubeRulesService();
-	assertThat(service).isNotNull();
+	Optional<SonarQubeRulesService> service = Optional.of(new SonarQubeRulesService());
+	assertThat(service).isPresent();
     }
 
 }

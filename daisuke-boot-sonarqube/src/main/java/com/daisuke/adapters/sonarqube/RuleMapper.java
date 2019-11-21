@@ -49,14 +49,16 @@ public interface RuleMapper {
     @Mapping(target = "description", source = "htmlDesc")
     @Mapping(target = "type", source = "type")
     @Mapping(target = "severity", source = "severity")
-    @Mapping(target = "language.name", source = "lang")
-    @Mapping(target = "language.description", ignore = true)
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "language", source = "lang")
+    @Mapping(target = "occurrencies", ignore = true)
     RuleDTO toRuleDTO(Rule wsRule);
 
     List<RuleDTO> toRuleDTOList(List<Rule> wsRules);
 
     @InheritInverseConfiguration(name = "toRuleDTO")
     @Mapping(target = "langName", source = "language.description")
+    @Mapping(target = "lang", source = "language")
     Rule toWsRule(RuleDTO ruleDTO);
 
 }

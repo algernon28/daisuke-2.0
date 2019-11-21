@@ -39,7 +39,7 @@ class EdisonCQITest {
 	measures.put(CODE_SMELL_MAJOR, new Measure(CODE_SMELL, MAJOR, 0.0f, 0L));
 	measures.put(CODE_SMELL_MINOR, new Measure(CODE_SMELL, MINOR, 0.0f, 5426L));
 	measures.put(CODE_SMELL_INFO, new Measure(CODE_SMELL, INFO, 0.0f, 1L));
-	bean = new ComponentDTO().setMeasures(measures).setAnalysisDate("12-02-2019").setName("FOO").setKey("foo.key");
+	bean = new ComponentDTO().setMeasures(measures).setName("FOO").setKey("foo.key");
     }
 
     @AfterEach

@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = false, chain = true)
 public class RuleDTO {
     private String key;
+    private String name;
     private String description;
     private TypeEnum type;
     private SeverityEnum severity;

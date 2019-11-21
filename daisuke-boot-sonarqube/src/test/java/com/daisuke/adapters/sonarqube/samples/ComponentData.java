@@ -70,15 +70,15 @@ public abstract class ComponentData implements ComponentEnumerations {
 	private static MeasureEnum measureKey = randomMeasure();
 
 	public static Component getWsComponent() {
-	    Component result = Component.newBuilder().build();
+	    Component result = Component.newBuilder().setAnalysisDate(randomAnalysisDate).setDescription(randomDescription)
+		    .setKey(randomKey).setLanguage(randomLanguage).setName(randomName).setPath(randomPath)
+		    .setProjectId(randomProjectId).setQualifier(randomQualifier).setRefKey(randomRefKey).build();
 	    return getWsComponent(result);
 	}
 
 	public static Component getWsComponent(Component prototype) {
 	    String language = !StringUtils.isBlank(prototype.getLanguage()) ? prototype.getLanguage()
 		    : randomLanguage;
-	    String analysisDate = !StringUtils.isBlank(prototype.getAnalysisDate())? prototype.getAnalysisDate()
-		    : randomAnalysisDate;
 	    String description = !StringUtils.isBlank(prototype.getDescription()) ? prototype.getDescription()
 		    : randomDescription;
 	    String key = !StringUtils.isBlank(prototype.getKey()) ? prototype.getKey() : randomName;
@@ -91,7 +91,7 @@ public abstract class ComponentData implements ComponentEnumerations {
 	    String qualifier = !StringUtils.isBlank(prototype.getQualifier()) ? prototype.getQualifier()
 		    : randomQualifier;
 	    String path = !StringUtils.isBlank(prototype.getPath()) ? prototype.getPath() : randomPath;
-	    Component result = Component.newBuilder().setLanguage(language).setAnalysisDate(analysisDate)
+	    Component result = Component.newBuilder().setLanguage(language)
 		    .setDescription(description).setKey(key).setName(name).setOrganization(organization)
 		    .setProjectId(projectId).setRefKey(refKey).setQualifier(qualifier).setPath(path).build();
 	    log.debug("returning {}", result);
@@ -122,7 +122,7 @@ public abstract class ComponentData implements ComponentEnumerations {
 	}
 
 	public static ComponentDTO getComponentDTO() {
-	    ComponentDTO result = new ComponentDTO().setAnalysisDate(randomAnalysisDate).setKey(randomKey)
+	    ComponentDTO result = new ComponentDTO().setKey(randomKey)
 		    .setLanguage(randomLanguage).setName(randomName).setDescription(randomDescription)
 		    .setOrganization(randomOrganization).setPath(randomPath).setProjectId(randomProjectId)
 		    .setQualifier(randomQualifier).setRefKey(randomRefKey);

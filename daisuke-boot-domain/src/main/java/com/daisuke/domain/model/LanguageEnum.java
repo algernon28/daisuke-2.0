@@ -12,7 +12,7 @@ public enum LanguageEnum {
     @Getter
     private String description;
 
-    LanguageEnum(String description) {
+    private LanguageEnum(String description) {
 	this.description = description;
     }
 }

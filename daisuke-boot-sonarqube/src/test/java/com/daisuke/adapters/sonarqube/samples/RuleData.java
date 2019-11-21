@@ -6,14 +6,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.sonarqube.ws.Common.RuleStatus;
 import org.sonarqube.ws.Common.RuleType;
-import org.sonarqube.ws.Common.Severity;
 import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.client.rules.SearchRequest;
 
 import com.daisuke.adapters.sonarqube.SearchRule;
-import com.daisuke.adapters.sonarqube.Utils;
 import com.daisuke.domain.model.LanguageEnum;
 import com.daisuke.domain.model.RuleDTO;
 import com.daisuke.domain.model.SeverityEnum;
@@ -28,11 +25,13 @@ public abstract class RuleData implements RuleEnumerations {
     }
 
     public static class RuleSample {
+	private static String name = randomString(15, false);
 	private static String key = randomString(10, true);
 	private static String description = String.format("generic description: %s", randomString(5, true));
 	private static String type = randomEnumString(TypeEnum.values());
 	private static String severity = randomEnumString(SeverityEnum.values());
 	private static Integer occurrencies = randomNumber(0, 1000);
+	private static LanguageEnum lang = randomLanguage();
 
 	public static List<Rule> randomRuleList(int size) {
 	    List<Rule> result = new ArrayList<>();
@@ -57,23 +56,15 @@ public abstract class RuleData implements RuleEnumerations {
 	}
 
 	public static RuleDTO getRuleDTO() {
-	    RuleDTO result = new RuleDTO().setDescription(description).setKey(key).setLanguage(randomLanguage())
+	    RuleDTO result = new RuleDTO().setName(name).setDescription(description).setKey(key).setLanguage(lang)
 		    .setSeverity(SeverityEnum.valueOf(severity)).setType(TypeEnum.valueOf(type));
 	    return result;
 	}
 
 	public static Rule getWsRule() {
-	    String desc = randomString(50, true);
-	    String key = randomString(10, true);
-	    LanguageEnum lang = randomLanguage();
-	    String name = randomString(15, false);
-	    String repo = randomEnumString(REPOSITORIES.values());
-	    String severity = randomEnumString(Severity.values()); 
-	    RuleType type = RuleType.valueOf(randomEnumString(RuleType.values()));
-	    RuleStatus status = RuleStatus.valueOf(randomEnumString(RuleStatus.values()));
-	    Rule result = Rule.newBuilder().setCreatedAt(Utils.randomDate(2018, 2019)).setGapDescription("XYZ")
-		    .setHtmlDesc(desc).setKey(key).setLang(lang.name()).setName(name)
-		    .setRepo(repo).setSeverity(severity).setStatus(status).setType(type).build();
+	    RuleType rtype = RuleType.valueOf(type);
+	    Rule result = Rule.newBuilder().setHtmlDesc(description).setKey(key).setLangName(lang.getDescription())
+		    .setLang(lang.name()).setName(name).setSeverity(severity).setType(rtype).build();
 	    return result;
 	}
 

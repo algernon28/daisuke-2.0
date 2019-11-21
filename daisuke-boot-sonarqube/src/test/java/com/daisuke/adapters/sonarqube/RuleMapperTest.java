@@ -92,7 +92,7 @@ class RuleMapperTest {
     @Test
     final void testToRuleDTO() {
 	RuleDTO actual = mapper.toRuleDTO(expectedWsRule);
-	assertThat(expectedRuleDTO).isEqualTo(actual);
+	assertThat(expectedRuleDTO).isEqualToComparingFieldByField(actual);
     }
 
     /**
@@ -112,7 +112,7 @@ class RuleMapperTest {
     @Test
     final void testToWsRule() {
 	Rule actual = mapper.toWsRule(expectedRuleDTO);
-	assertThat(expectedWsRule).isEqualToComparingFieldByField(actual);
+	assertThat(expectedWsRule).isEqualTo(actual);
     }
 
 }

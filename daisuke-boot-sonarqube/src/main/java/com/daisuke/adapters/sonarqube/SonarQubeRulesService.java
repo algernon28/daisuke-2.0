@@ -33,7 +33,7 @@ public class SonarQubeRulesService implements RulesAdapter<SearchRule> {
 
     public SonarQubeRulesService(SonarQubeClient client) {
 	this.client = client;
-	rulesService = client.getRulesService();
+	this.rulesService = client.getRulesService();
     }
 
     @Autowired
