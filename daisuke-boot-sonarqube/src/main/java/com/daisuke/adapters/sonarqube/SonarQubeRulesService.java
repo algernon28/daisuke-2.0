@@ -37,7 +37,7 @@ public class SonarQubeRulesService implements RulesAdapter<SearchRule> {
     }
 
     @Autowired
-    public void setRuleMapper(RuleMapper mapper) {
+    public void setMapper(RuleMapper mapper) {
 	this.ruleMapper = mapper;
     }
 

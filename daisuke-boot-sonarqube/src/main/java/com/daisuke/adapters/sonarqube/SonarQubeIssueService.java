@@ -36,6 +36,7 @@ public class SonarQubeIssueService implements IssuesAdapter<SearchIssue> {
     private RulesAdapter<SearchRule> rulesAdapter;
     private IssuesService issuesService;
     private IssueMapper issueMapper;
+    private RuleMapper ruleMapper;
 
     public SonarQubeIssueService(SonarQubeClient client) {
 	this.client = client;
@@ -45,8 +46,13 @@ public class SonarQubeIssueService implements IssuesAdapter<SearchIssue> {
     }
 
     @Autowired
-    public void setIssueMapper(IssueMapper mapper) {
+    public void setMapper(IssueMapper mapper) {
 	this.issueMapper = mapper;
+    }
+
+    @Autowired
+    public void setRulesAdapter(RulesAdapter<SearchRule> adapter) {
+	this.rulesAdapter = adapter;
     }
 
     @Override

@@ -35,7 +35,7 @@ public class SonarQubeComponentService implements ComponentsAdapter<SearchCompon
     }
 
     @Autowired
-    public void setComponentMapper(ComponentMapper mapper) {
+    public void setMapper(ComponentMapper mapper) {
 	this.componentMapper = mapper;
     }
 

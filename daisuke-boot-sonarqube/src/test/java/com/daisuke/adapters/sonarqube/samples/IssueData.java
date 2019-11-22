@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sonarqube.ws.Common.RuleType;
 import org.sonarqube.ws.Common.Severity;
 import org.sonarqube.ws.Issues.Issue;
@@ -122,16 +124,56 @@ public class IssueData implements IssueEnumerations {
 	    Issue result = Issue.newBuilder().setAssignee(randomAssignee).setAuthor(randomAuthor)
 		    .setCloseDate(randomCloseDate).setComponent(randomComponent).setEffort(randomEffort)
 		    .setCreationDate(randomCreationDate).setKey(randomKey).setLine(randomLine).setMessage(randomMessage)
-		    .setProject(randomProject).setResolution(randomResolution).setRule(randomRuleKey)
-		    .setSeverity(Severity.valueOf(randomSeverity.name())).setStatus(randomStatus)
+		    .setProject(randomProject).setResolution(randomResolution)// .setRuleName(randomRuleName)
+		    .setRule(randomRuleKey).setSeverity(Severity.valueOf(randomSeverity.name())).setStatus(randomStatus)
 		    .setType(RuleType.valueOf(randomType.name())).setUpdateDate(randomUpdateDate).build();
+	    return getWsIssue(result);
+	}
+
+	public static Issue getWsIssue(Issue prototype) {
+	    String assignee = !StringUtils.isBlank(prototype.getAssignee()) ? prototype.getAssignee() : randomAssignee;
+	    String author = !StringUtils.isBlank(prototype.getAuthor()) ? prototype.getAuthor() : randomAuthor;
+	    String closeDate = !StringUtils.isBlank(prototype.getCloseDate()) ? prototype.getCloseDate()
+		    : randomDate(1999, 2000);
+	    String component = !StringUtils.isBlank(prototype.getComponent()) ? prototype.getComponent()
+		    : randomComponent;
+	    String effort = !StringUtils.isBlank(prototype.getEffort()) ? prototype.getEffort() : randomEffort;
+	    String creationDate = !StringUtils.isBlank(prototype.getCreationDate()) ? prototype.getCreationDate()
+		    : randomDate(1999, 2000);
+	    String key = !StringUtils.isBlank(prototype.getKey()) ? prototype.getKey() : randomKey;
+	    int line = (prototype.getLine() != 0) ? prototype.getLine() : randomLine;
+	    String message = !StringUtils.isBlank(prototype.getMessage()) ? prototype.getMessage() : randomMessage;
+	    String project = !StringUtils.isBlank(prototype.getProject()) ? prototype.getProject() : randomProject;
+	    String resolution = !StringUtils.isBlank(prototype.getResolution()) ? prototype.getResolution()
+		    : randomResolution;
+	    String rule = !StringUtils.isBlank(prototype.getRule()) ? prototype.getRule() : randomRuleKey;
+	    Severity severity = (prototype.getSeverity() != null) ? prototype.getSeverity()
+		    : Severity.valueOf(randomSeverity.name());
+	    String status = !StringUtils.isBlank(prototype.getStatus()) ? prototype.getStatus() : randomStatus;
+	    RuleType type = (prototype.getType() != null) ? prototype.getType() : RuleType.valueOf(randomType.name());
+	    String updateDate = !StringUtils.isBlank(prototype.getUpdateDate()) ? prototype.getUpdateDate()
+		    : randomDate(1999, 2000);
+	    Issue result = Issue.newBuilder().setAssignee(assignee).setAuthor(author).setCloseDate(closeDate)
+		    .setComponent(component).setEffort(effort).setCreationDate(creationDate).setKey(key).setLine(line)
+		    .setMessage(message).setProject(project).setResolution(resolution).setRule(rule)
+		    .setSeverity(severity).setStatus(status).setType(type).setUpdateDate(updateDate).build();
 	    return result;
 	}
 
 	public static List<Issue> getWsIssueList(int size) {
+	    return getWsIssueList(null, size);
+	}
+
+	public static List<Issue> getWsIssueList(Issue prototype, int size) {
 	    List<Issue> result = new ArrayList<>();
 	    for (int i = 0; i < size; i++) {
-		result.add(getWsIssue());
+		Issue issue = null;
+		if (Optional.of(prototype).isPresent()) {
+		    issue = getWsIssue(prototype);
+		} else {
+		    issue = getWsIssue();
+		}
+		result.add(issue);
 	    }
 	    return result;
 	}

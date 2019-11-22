@@ -7,17 +7,14 @@ import static com.daisuke.adapters.sonarqube.Constants.COMPONENTSEARCH_URL;
 import static com.daisuke.adapters.sonarqube.Constants.COMPONENTSHOW_URL;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.json.JSONException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,15 +22,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.mapstruct.factory.Mappers;
 import org.sonarqube.ws.Components.Component;
 import org.sonarqube.ws.Components.SearchWsResponse;
 
-import com.daisuke.adapters.sonarqube.config.SonarQubeConfiguration;
 import com.daisuke.adapters.sonarqube.samples.ComponentData.ComponentSample;
 import com.daisuke.domain.adapters.SearchException;
 import com.daisuke.domain.model.ComponentDTO;
-import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.github.tomakehurst.wiremock.matching.StringValuePattern;
@@ -44,41 +38,25 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-class SonarQubeComponentServiceTest {
-    private SonarQubeClient client;
-    private SonarQubeComponentService componentService;
-    private WireMockServer wmServer;
-    private ComponentMapper mapper;
+class SonarQubeComponentServiceTest  extends AbstractWireMockTest<SonarQubeComponentService, ComponentMapper>{
 
+    
     /**
      * @throws java.lang.Exception
      */
     @BeforeAll
     void setUpBeforeClass() throws Exception {
-	wmServer = new WireMockServer((options().bindAddress("127.0.0.1").dynamicPort()));
-	wmServer.start();
-	SonarQubeConfiguration config = TestConfig.getConfiguration();
-	SonarQubeConfiguration.Server analysisServer = config.getAnalysisServer();
-	String uriString = String.format("http://127.0.0.1:%s", wmServer.port());
-	URL url = new URL(uriString);
-	analysisServer.setUrl(url);
-	client = new SonarQubeClient(config);
-	mapper = Mappers.getMapper(ComponentMapper.class);
-	componentService = new SonarQubeComponentService(client);
-	componentService.setComponentMapper(mapper);
-	wireMockInit();
+	super.init(SonarQubeComponentService.class, ComponentMapper.class);
     }
 
-    private void wireMockInit() throws JSONException {
-	wmServer.addStubMapping(Constants.loginBuilder.build());
-	wmServer.addStubMapping(Constants.validationBuilder.build());
-    }
+
 
     /**
      * @throws java.lang.Exception
      */
     @AfterAll
     void tearDownAfterClass() throws Exception {
+	wmServer.stop();
     }
 
     /**
@@ -113,14 +91,15 @@ class SonarQubeComponentServiceTest {
 	SearchComponent search = new SearchComponent().setLanguage(language).setQualifiers(qualifiers);
 	// execute tested method to find actual data
 	mockDTOList(wsComponents, qualifiers, language);
-	List<ComponentDTO> actual = componentService.findComponents(search);
+	List<ComponentDTO> actual = service.findComponents(search);
 	assertThat(expected).isEqualTo(actual);
     }
 
     /**
      * Test method for
      * {@link com.daisuke.adapters.sonarqube.SonarQubeComponentService#findComponentByKey(java.lang.String)}.
-     * @throws SearchException 
+     * 
+     * @throws SearchException
      */
     @Test
     final void testFindComponentByKey() throws SearchException {
@@ -128,7 +107,7 @@ class SonarQubeComponentServiceTest {
 	ComponentDTO expected = expectedComponentDTO(key);
 	Component cmp = mapper.toWsComponent(expected);
 	mockDTO(cmp, key);
-	ComponentDTO actual = componentService.findComponentByKey(key);
+	ComponentDTO actual = service.findComponentByKey(key);
 	assertThat(expected).isEqualTo(actual);
     }
 
@@ -141,15 +120,15 @@ class SonarQubeComponentServiceTest {
 	SonarQubeComponentService service = new SonarQubeComponentService();
 	assertThat(service).isNotNull();
     }
-    
+
     private List<Component> expectedComponentList(int size, String language) {
 	Component prototype = Component.newBuilder().setLanguage(language).build();
 	List<Component> result = ComponentSample.getWsComponentList(prototype, size);
 	return result;
     }
-    
+
     private ComponentDTO expectedComponentDTO(String key) {
-	ComponentDTO result =ComponentSample.getComponentDTO();
+	ComponentDTO result = ComponentSample.getComponentDTO();
 	result = result.setKey(key);
 	return result;
     }

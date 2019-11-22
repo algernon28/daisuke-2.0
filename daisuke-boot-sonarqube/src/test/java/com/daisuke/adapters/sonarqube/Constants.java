@@ -10,6 +10,7 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 
 public final class Constants {
+    public static final String UNIT_TEST_IP_ADDRESS = "127.0.0.1";
     public static final String AUTH_LOGIN = "/api/authentication/login";
     public static final String AUTH_VALIDATION = "/api/authentication/validate";
     private static final String JSON_ISVALID = "{\"valid\":true}";
