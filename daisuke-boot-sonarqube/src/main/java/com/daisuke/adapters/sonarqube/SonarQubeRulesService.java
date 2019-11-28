@@ -10,6 +10,7 @@ import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.client.rules.RulesService;
 import org.sonarqube.ws.client.rules.SearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.daisuke.domain.adapters.RulesAdapter;
 import com.daisuke.domain.adapters.SearchException;
@@ -20,6 +21,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Service
 @RequiredArgsConstructor
 @Data
 @Slf4j
@@ -48,7 +50,7 @@ public class SonarQubeRulesService implements RulesAdapter<SearchRule> {
 	Rules.SearchResponse response = rulesService.search(request);
 	Optional<List<Rule>> wsRules = Optional.ofNullable(response.getRulesList());
 	List<RuleDTO> result = new ArrayList<>();
-	if (wsRules.isPresent() && !wsRules.isEmpty()) {
+	if (wsRules.isPresent()) {
 	    result = ruleMapper.toRuleDTOList(wsRules.get());
 	    log.debug("returning list: {}", result);
 	} else {
@@ -57,6 +59,7 @@ public class SonarQubeRulesService implements RulesAdapter<SearchRule> {
 	return result;
     }
 
+    @Override
     public RuleDTO findRuleByKey(String key) throws SearchException {
 	client.refreshConnection();
 	SearchRule search = new SearchRule().setRuleKey(key).addFieldToBeReturned("name").setPageSize("1");
@@ -70,7 +73,7 @@ public class SonarQubeRulesService implements RulesAdapter<SearchRule> {
 	}
 	Optional<Rule> rule = Optional.ofNullable(response.getRules(0));
 	RuleDTO result;
-	if (rule.isPresent() && !rule.isEmpty()) {
+	if (rule.isPresent()) {
 	    result = ruleMapper.toRuleDTO(rule.get());
 	} else {
 	    String msg = String.format("%s [key=%s]", RULE_NOT_FOUND, key);

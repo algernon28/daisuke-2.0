@@ -10,6 +10,7 @@ import org.sonarqube.ws.client.components.ComponentsService;
 import org.sonarqube.ws.client.components.SearchRequest;
 import org.sonarqube.ws.client.components.ShowRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.daisuke.domain.adapters.ComponentsAdapter;
 import com.daisuke.domain.adapters.SearchException;
@@ -20,6 +21,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Service
 @RequiredArgsConstructor
 @Data
 @Slf4j
@@ -46,7 +48,7 @@ public class SonarQubeComponentService implements ComponentsAdapter<SearchCompon
 	Components.SearchWsResponse response = componentsService.search(request);
 	Optional<List<Component>> wsComponents = Optional.ofNullable(response.getComponentsList());
 	List<ComponentDTO> result = new ArrayList<>();
-	if (wsComponents.isPresent() && !wsComponents.isEmpty()) {
+	if (wsComponents.isPresent()) {
 	    result = componentMapper.toComponentDTOList(wsComponents.get());
 	    log.debug("returning list: {}", result);
 	} else {
@@ -63,7 +65,7 @@ public class SonarQubeComponentService implements ComponentsAdapter<SearchCompon
 	Components.ShowWsResponse response = componentsService.show(request);
 	Optional<Component> wsComponent = Optional.ofNullable(response.getComponent());
 	ComponentDTO result = null;
-	if (wsComponent.isPresent() && !wsComponent.isEmpty()) {
+	if (wsComponent.isPresent()) {
 	    result = componentMapper.toComponentDTO(wsComponent.get());
 	} else {
 	    String msg = String.format("%s [key=%s]", COMPONENT_NOT_FOUND, key);

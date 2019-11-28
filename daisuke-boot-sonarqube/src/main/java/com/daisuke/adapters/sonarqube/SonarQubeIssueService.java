@@ -10,6 +10,7 @@ import org.sonarqube.ws.Issues.SearchWsResponse;
 import org.sonarqube.ws.client.issues.IssuesService;
 import org.sonarqube.ws.client.issues.SearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.daisuke.domain.adapters.IssuesAdapter;
 import com.daisuke.domain.adapters.RulesAdapter;
@@ -22,6 +23,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Service
 @RequiredArgsConstructor
 @Data
 @Slf4j
