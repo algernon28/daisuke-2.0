@@ -7,6 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.client.rules.SearchRequest;
+import org.sonarqube.ws.client.rules.ShowRequest;
 
 import com.daisuke.domain.model.RuleDTO;
 
@@ -60,5 +61,12 @@ public interface RuleMapper {
     @Mapping(target = "langName", source = "language.description")
     @Mapping(target = "lang", source = "language")
     Rule toWsRule(RuleDTO ruleDTO);
+
+    @Mapping(target = "key", source = "key")
+    @Mapping(target = "actives", source = "actives")
+    ShowRule toShowRule(ShowRequest wsRequest);
+
+    @InheritInverseConfiguration(name = "toShowRule")
+    ShowRequest toWsShowRequest(ShowRule search);
 
 }

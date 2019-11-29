@@ -1,7 +1,7 @@
 package com.daisuke.adapters.sonarqube;
 
 import static com.daisuke.adapters.sonarqube.Constants.ISSUE_URL;
-import static com.daisuke.adapters.sonarqube.Constants.RULESEARCH_URL;
+import static com.daisuke.adapters.sonarqube.Constants.RULESHOW_URL;
 import static com.daisuke.adapters.sonarqube.samples.IssueData.IssueSample.getIssueDTO;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
@@ -40,12 +40,13 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 @TestInstance(Lifecycle.PER_CLASS)
 class SonarQubeIssueServiceTest extends AbstractWireMockTest<SonarQubeIssueService, IssueMapper> {
     SonarQubeRulesService rulesService;
+    StubMapping rulesMapping;
+    UUID rulesID = UUID.randomUUID();
 
     @BeforeAll
     void setUpBeforeClass() throws Exception {
 	super.init(SonarQubeIssueService.class, IssueMapper.class);
-	StubMapping rulesMapping = get(urlPathEqualTo(RULESEARCH_URL)).withId(UUID.fromString("rules"))
-		.withQueryParam("rule_key", new AnythingPattern())
+	rulesMapping = get(urlPathEqualTo(RULESHOW_URL)).withId(rulesID).withQueryParam("key", new AnythingPattern())
 		.build();
 	wmServer.addStubMapping(rulesMapping);
 	rulesService = new SonarQubeRulesService(client);
@@ -77,6 +78,7 @@ class SonarQubeIssueServiceTest extends AbstractWireMockTest<SonarQubeIssueServi
 	List<String> componentKeys = wsIssues.stream().flatMap(comp -> Stream.of(comp.getKey())).distinct()
 		.collect(Collectors.toList());
 	mockDTOList(wsIssues, componentKeys);
+	search.setComponentKeys(componentKeys);
 	List<IssueDTO> actual = service.findIssues(search);
 	assertThat(expected).isEqualTo(actual);
     }

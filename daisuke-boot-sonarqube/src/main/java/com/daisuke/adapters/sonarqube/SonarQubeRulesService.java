@@ -9,6 +9,7 @@ import org.sonarqube.ws.Rules;
 import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.client.rules.RulesService;
 import org.sonarqube.ws.client.rules.SearchRequest;
+import org.sonarqube.ws.client.rules.ShowRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,17 +62,14 @@ public class SonarQubeRulesService implements RulesAdapter<SearchRule> {
 
     @Override
     public RuleDTO findRuleByKey(String key) throws SearchException {
+
 	client.refreshConnection();
-	SearchRule search = new SearchRule().setRuleKey(key).addFieldToBeReturned("name").setPageSize("1");
-	SearchRequest request = ruleMapper.toWsSearchRequest(search);
-	Rules.SearchResponse response = null;
+	ShowRule showRule = new ShowRule().setKey(key);
+	ShowRequest request = ruleMapper.toWsShowRequest(showRule);
+	Rules.ShowResponse response = null;
 	rulesService = client.getRulesService();
-	try {
-	    response = rulesService.search(request);
-	} catch (org.sonarqube.ws.client.HttpException e) {
-	    throw new SearchException(e.getMessage(), e);
-	}
-	Optional<Rule> rule = Optional.ofNullable(response.getRules(0));
+	response = rulesService.show(request);
+	Optional<Rule> rule = Optional.ofNullable(response.getRule());
 	RuleDTO result;
 	if (rule.isPresent()) {
 	    result = ruleMapper.toRuleDTO(rule.get());
