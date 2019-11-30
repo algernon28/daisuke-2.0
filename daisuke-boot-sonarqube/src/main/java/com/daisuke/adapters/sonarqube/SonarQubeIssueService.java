@@ -64,7 +64,7 @@ public class SonarQubeIssueService implements IssuesAdapter<SearchIssue> {
 	SearchWsResponse response = issuesService.search(request);
 	Optional<List<Issue>> wsIssues = Optional.ofNullable(response.getIssuesList());
 	List<IssueDTO> result = new ArrayList<>();
-	if (wsIssues.isPresent() && !wsIssues.isEmpty()) {
+	if (wsIssues.isPresent()) {
 	    result = issueMapper.toIssueDTOList(wsIssues.get());
 	    log.debug("returning list: {}", result);
 	} else {
@@ -82,7 +82,7 @@ public class SonarQubeIssueService implements IssuesAdapter<SearchIssue> {
 	Optional<Issue> wsIssue = Optional.ofNullable(response.getIssues(0));
 	String ruleKey = null;
 	IssueDTO result = null;
-	if (wsIssue.isPresent() && !wsIssue.isEmpty()) {
+	if (wsIssue.isPresent()) {
 	    result = issueMapper.toIssueDTO(wsIssue.get());
 	    ruleKey = result.getRuleKey();
 	    // find the rule description and set it

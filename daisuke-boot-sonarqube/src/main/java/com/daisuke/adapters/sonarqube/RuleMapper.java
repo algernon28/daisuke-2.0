@@ -10,6 +10,7 @@ import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.Rules.Tags;
 import org.sonarqube.ws.Rules.TagsOrBuilder;
 import org.sonarqube.ws.client.rules.SearchRequest;
+import org.sonarqube.ws.client.rules.ShowRequest;
 
 import com.daisuke.domain.model.RuleDTO;
 
@@ -66,6 +67,7 @@ public interface RuleMapper {
     @Mapping(target = "lang", source = "language")
     Rule toWsRule(RuleDTO ruleDTO);
 
+<<<<<<< HEAD
     default List<String> toTagsString(TagsOrBuilder tags) {
 	List<String> result = new ArrayList<>();
 	result.addAll(tags.getTagsList());
@@ -75,5 +77,13 @@ public interface RuleMapper {
     default Tags toTags(List<String> stringList) {
 	return Tags.newBuilder().addAllTags(stringList).build();
     }
+=======
+    @Mapping(target = "key", source = "key")
+    @Mapping(target = "actives", source = "actives")
+    ShowRule toShowRule(ShowRequest wsRequest);
+
+    @InheritInverseConfiguration(name = "toShowRule")
+    ShowRequest toWsShowRequest(ShowRule search);
+>>>>>>> refs/remotes/origin/master
 
 }

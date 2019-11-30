@@ -1,6 +1,7 @@
 package com.daisuke.adapters.sonarqube;
 
 import static com.daisuke.adapters.sonarqube.Constants.RULESEARCH_URL;
+import static com.daisuke.adapters.sonarqube.Constants.RULESHOW_URL;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,7 +33,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping;
  *
  */
 @TestInstance(Lifecycle.PER_CLASS)
-class SonarQubeRulesServiceTest extends AbstractWireMockTest<SonarQubeRulesService, RuleMapper>{
+class SonarQubeRulesServiceTest extends AbstractWireMockTest<SonarQubeRulesService, RuleMapper> {
 
     /**
      * @throws java.lang.Exception
@@ -120,8 +121,8 @@ class SonarQubeRulesServiceTest extends AbstractWireMockTest<SonarQubeRulesServi
     final void testFindRuleByKey() throws SearchException {
 	Rule wsRule = RuleSample.getWsRule();
 	String ruleKey = wsRule.getKey();
-	StubMapping mapping = get(urlPathEqualTo(RULESEARCH_URL))
-		.withQueryParam("rule_key", new EqualToPattern(ruleKey)).build();
+	StubMapping mapping = get(urlPathEqualTo(RULESHOW_URL)).withQueryParam("key", new EqualToPattern(ruleKey))
+		.build();
 	SearchResponse response = SearchResponse.newBuilder().addRules(wsRule).setTotal(1L).build();
 	ResponseDefinitionBuilder builder = ResponseDefinitionBuilder.like(mapping.getResponse())
 		.withBody(response.toByteArray());
