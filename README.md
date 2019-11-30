@@ -13,9 +13,12 @@ The first release, which is currently in production is Daisuke 1.0, which is sti
 
 ## High-Level architecture
 Daisuke 2.0 leverages [Spring Boot](https://spring.io/projects/spring-boot) for its architecture, and it is made of several [Maven](https://maven.apache.org/) modules:  
-* daisuke-2.0: the root module, it contains the references to the submodules, and defines the libraries in common across the modules. It also manages the versions to be used.
-* daisuke-boot-domain: module with the data model interfaces and DTO
-* daisuke-boot-jpa: module with the [Spring JPA](https://spring.io/projects/spring-data-jpa) integration
-* daisuke-boot-sonarqube: module with the integration to SonarQube. It uses the [standard library](https://mvnrepository.com/artifact/org.sonarsource.sonarqube/sonar-plugin-api). It actually uses version 8.0, which is compatible with Java 9+ (Daisuke is built against Java 11).
-* daisuke-boot-application: module with the REST controllers. It depends on the modules above.  
+
+*  daisuke-2.0: the root module, it contains the references to the submodules, and defines the libraries in common across the modules. It also manages the versions to be used.
+
+*   daisuke-boot-domain: module with the data model interfaces and DTO
+*   daisuke-boot-jpa: module with the [Spring JPA](https://spring.io/projects/spring-data-jpa) integration
+*   daisuke-boot-sonarqube: module with the integration to SonarQube. It uses the [standard library](https://mvnrepository.com/artifact/org.sonarsource.sonarqube/sonar-plugin-api). It actually uses version 8.0, which is compatible with Java 9+ (Daisuke is built against Java 11)
+*   daisuke-boot-application: module with the REST controllers. It depends on the modules above.  
+
 
