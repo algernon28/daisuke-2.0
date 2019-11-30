@@ -21,4 +21,5 @@ Daisuke 2.0 leverages [Spring Boot](https://spring.io/projects/spring-boot) for 
 *   daisuke-boot-sonarqube: module with the integration to SonarQube. It uses the [standard library](https://mvnrepository.com/artifact/org.sonarsource.sonarqube/sonar-plugin-api). It actually uses version 8.0, which is compatible with Java 9+ (Daisuke is built against Java 11)
 *   daisuke-boot-application: module with the REST controllers. It depends on the modules above.  
 
+More details on the README in the modules' root.
 
