@@ -1,7 +1,6 @@
 package com.daisuke.adapters.sonarqube;
 
 import org.springframework.lang.NonNull;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -14,6 +13,7 @@ import lombok.experimental.Accessors;
  * @see <a href=
  *      "https://next.sonarqube.com/sonarqube/web_api/api/components/search">/api/components/search</a>
  */
+
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.sonarqube.ws.Common.RuleType;
 import org.sonarqube.ws.Rules.Rule;
+import org.sonarqube.ws.Rules.Tags;
 import org.sonarqube.ws.client.rules.SearchRequest;
 
 import com.daisuke.adapters.sonarqube.SearchRule;
@@ -32,6 +33,7 @@ public abstract class RuleData implements RuleEnumerations {
 	private static String severity = randomEnumString(SeverityEnum.values());
 	private static Integer occurrencies = randomNumber(0, 1000);
 	private static LanguageEnum lang = randomLanguage();
+	private static List<String> tagList = randomStringList(2, true);
 
 	public static List<Rule> randomRuleList(int size) {
 	    List<Rule> result = new ArrayList<>();
@@ -57,14 +59,15 @@ public abstract class RuleData implements RuleEnumerations {
 
 	public static RuleDTO getRuleDTO() {
 	    RuleDTO result = new RuleDTO().setName(name).setDescription(description).setKey(key).setLanguage(lang)
-		    .setSeverity(SeverityEnum.valueOf(severity)).setType(TypeEnum.valueOf(type));
+		    .setSeverity(SeverityEnum.valueOf(severity)).setType(TypeEnum.valueOf(type)).setTags(tagList);
 	    return result;
 	}
 
 	public static Rule getWsRule() {
 	    RuleType rtype = RuleType.valueOf(type);
+	    Tags tags = Tags.newBuilder().addAllTags(tagList).build();
 	    Rule result = Rule.newBuilder().setHtmlDesc(description).setKey(key).setLangName(lang.getDescription())
-		    .setLang(lang.name()).setName(name).setSeverity(severity).setType(rtype).build();
+		    .setLang(lang.name()).setName(name).setSeverity(severity).setType(rtype).setTags(tags).build();
 	    return result;
 	}
 

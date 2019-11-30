@@ -1,11 +1,14 @@
 package com.daisuke.adapters.sonarqube;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.sonarqube.ws.Rules.Rule;
+import org.sonarqube.ws.Rules.Tags;
+import org.sonarqube.ws.Rules.TagsOrBuilder;
 import org.sonarqube.ws.client.rules.SearchRequest;
 
 import com.daisuke.domain.model.RuleDTO;
@@ -40,6 +43,7 @@ public interface RuleMapper {
     @Mapping(target = "statuses", source = "statuses")
     @Mapping(target = "templateKey", source = "templateKey")
     @Mapping(target = "types", source = "types")
+    @Mapping(target = "tags", source = "tags")
     SearchRule toSearchRule(SearchRequest wsRequest);
 
     @InheritInverseConfiguration(name = "toSearchRule")
@@ -52,6 +56,7 @@ public interface RuleMapper {
     @Mapping(target = "name", source = "name")
     @Mapping(target = "language", source = "lang")
     @Mapping(target = "occurrencies", ignore = true)
+    @Mapping(target = "tags", source = "tags")
     RuleDTO toRuleDTO(Rule wsRule);
 
     List<RuleDTO> toRuleDTOList(List<Rule> wsRules);
@@ -60,5 +65,15 @@ public interface RuleMapper {
     @Mapping(target = "langName", source = "language.description")
     @Mapping(target = "lang", source = "language")
     Rule toWsRule(RuleDTO ruleDTO);
+
+    default List<String> toTagsString(TagsOrBuilder tags) {
+	List<String> result = new ArrayList<>();
+	result.addAll(tags.getTagsList());
+	return result;
+    }
+
+    default Tags toTags(List<String> stringList) {
+	return Tags.newBuilder().addAllTags(stringList).build();
+    }
 
 }

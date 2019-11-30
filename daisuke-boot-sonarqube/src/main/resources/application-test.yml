@@ -1,0 +1,28 @@
+server.port: 7007
+daisuke:
+  server-type: SonarQube
+  analysis-server: 
+    url: https://next.sonarqube.com/sonarqube
+    token: 
+  output:
+    path: D:/temp/myFile.csv
+spring:
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+        enabled: true
+  jpa:
+    database: hsql
+    generate-ddl: true
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      use-new-id-generator-mappings: true
+      ddl-auto: create
+  datasource:
+    url:  jdbc:hsqldb:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    data-username: sa
+    data-password: 
+    

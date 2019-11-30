@@ -11,6 +11,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -18,7 +19,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication(scanBasePackages = { "com.daisuke.application", "com.daisuke.persistence",
-	"com.daisuke.adapters.sonarqube", "com.daisuke.adapters" })
+	"com.daisuke.adapters.sonarqube", "com.daisuke.controllers.sonarqube" })
+ @EnableAutoConfiguration
 @Slf4j
 public class DaisukeApplication implements ApplicationRunner {
     private static final String USAGE = "usage: java  -jar ./app.jar --spring.config.location=file://<path>/myfile.yml";
@@ -70,7 +72,6 @@ public class DaisukeApplication implements ApplicationRunner {
 	} catch (URISyntaxException e) {
 	    log.error("Path [{}] not valid!", pathArg, e);
 	    throw new IllegalArgumentException(e);
-	    // System.exit(-1);
 	}
 	log.debug("URI found: {}", configURI);
     }
