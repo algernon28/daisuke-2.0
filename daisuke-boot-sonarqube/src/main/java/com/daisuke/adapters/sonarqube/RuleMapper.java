@@ -42,9 +42,9 @@ public interface RuleMapper {
     @Mapping(target = "severities", source = "severities")
     @Mapping(target = "sonarsourceSecurity", source = "sonarsourceSecurity")
     @Mapping(target = "statuses", source = "statuses")
+    @Mapping(target = "tags", source = "tags")
     @Mapping(target = "templateKey", source = "templateKey")
     @Mapping(target = "types", source = "types")
-    @Mapping(target = "tags", source = "tags")
     SearchRule toSearchRule(SearchRequest wsRequest);
 
     @InheritInverseConfiguration(name = "toSearchRule")

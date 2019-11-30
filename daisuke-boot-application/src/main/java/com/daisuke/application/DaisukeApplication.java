@@ -5,22 +5,21 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import lombok.extern.slf4j.Slf4j;
 
-@SpringBootApplication(scanBasePackages = { "com.daisuke.application", "com.daisuke.persistence",
-	"com.daisuke.adapters.sonarqube", "com.daisuke.controllers.sonarqube" })
- @EnableAutoConfiguration
+@SpringBootApplication(scanBasePackages = { "com.daisuke.application.api", "com.daisuke.persistence",
+	"com.daisuke.adapters.sonarqube" })
 @Slf4j
 public class DaisukeApplication implements ApplicationRunner {
     private static final String USAGE = "usage: java  -jar ./app.jar --spring.config.location=file://<path>/myfile.yml";
@@ -33,8 +32,10 @@ public class DaisukeApplication implements ApplicationRunner {
      * @param args application arguments
      */
     public static void main(String[] args) {
-	String mode = args != null && args.length > 0 ? args[0] : null;
-	if (args == null || args.length < 1) {
+	String mode = null;
+	if (args.length > 0) {
+	    mode = args[0];
+	} else {
 	    log.error("No configuration path parameter passed! -> {}", USAGE);
 	    System.exit(-1);
 	}

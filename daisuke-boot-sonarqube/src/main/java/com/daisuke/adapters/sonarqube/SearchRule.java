@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class SearchRule {
-    /**
+    /** 
      * Possible values:
      * <ul>
      * <li>"true"</li>

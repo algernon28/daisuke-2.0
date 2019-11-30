@@ -1,7 +1,6 @@
 package com.daisuke.adapters.sonarqube;
 
-import static com.daisuke.adapters.sonarqube.Constants.ISSUE_URL;
-import static com.daisuke.adapters.sonarqube.Constants.RULESHOW_URL;
+import static com.daisuke.adapters.sonarqube.Constants.*;
 import static com.daisuke.adapters.sonarqube.samples.IssueData.IssueSample.getIssueDTO;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;

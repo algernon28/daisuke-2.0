@@ -10,7 +10,6 @@ import org.sonarqube.ws.Issues.SearchWsResponse;
 import org.sonarqube.ws.client.issues.IssuesService;
 import org.sonarqube.ws.client.issues.SearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.daisuke.domain.adapters.IssuesAdapter;
 import com.daisuke.domain.adapters.RulesAdapter;
@@ -23,7 +22,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
 @RequiredArgsConstructor
 @Data
 @Slf4j
@@ -32,9 +30,9 @@ public class SonarQubeIssueService implements IssuesAdapter<SearchIssue> {
     /**
      * SonarQube currently has a maximum result size hard capped to 10k, requesting
      * for more will produce a HTTP 400 error.
-     */
+     */ 
     public static final long RESULT_MAX_SIZE = 10000;
-    private SonarQubeClient client;
+    private SonarQubeClient client; 
     private RulesAdapter<SearchRule> rulesAdapter;
     private IssuesService issuesService;
     private IssueMapper issueMapper;

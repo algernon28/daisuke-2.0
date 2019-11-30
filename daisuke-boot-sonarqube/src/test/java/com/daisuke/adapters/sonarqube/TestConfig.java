@@ -10,7 +10,7 @@ import com.daisuke.adapters.sonarqube.config.SonarQubeConfiguration;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TestConfig {
+public class TestConfig { 
 
     @Bean
     public static SonarQubeConfiguration getConfiguration() {

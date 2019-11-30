@@ -1,11 +1,10 @@
 /**
  * 
  */
-package com.daisuke.controllers.sonarqube;
+package com.daisuke.application.api;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.daisuke.adapters.sonarqube.SearchRule;
-import com.daisuke.adapters.sonarqube.SonarQubeRulesService;
-import com.daisuke.adapters.sonarqube.config.SonarQubeConfiguration;
 import com.daisuke.domain.adapters.RulesAdapter;
 import com.daisuke.domain.adapters.SearchException;
 import com.daisuke.domain.model.RuleDTO;
@@ -29,18 +26,16 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/report")
 @Slf4j
-public class RuleController {
+public class SonarqubeRuleController {
     private RulesAdapter<SearchRule> rulesAdapter;
-    private SonarQubeConfiguration config;
+   
 
-    @Autowired
-    void setConfiguration(SonarQubeConfiguration config) {
-	this.config = config;
-    }
-
-    @Autowired
-    void setRuleAdapter(RulesAdapter<SearchRule> adapter) {
-	this.rulesAdapter = adapter;
+    /**
+     *  Default constructor, the parameter is injected by Spring
+     * @param rulesAdapter The Spring Service retrieving rules
+     */
+    public SonarqubeRuleController(RulesAdapter<SearchRule> rulesAdapter) {
+	this.rulesAdapter = rulesAdapter;
     }
 
     @GetMapping("/rules/search")
@@ -82,7 +77,15 @@ public class RuleController {
 		.setTags(tags).setTemplateKey(templateKey).setTypes(types);
 	List<RuleDTO> result = rulesAdapter.findRules(search);
 	log.debug("rules found: {}", result);
-	return ResponseEntity.ok(result                      );
+	return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/rules/show")
+    @ResponseBody
+    public RuleDTO findRule(@RequestParam(name = "rule_key", required = true) String ruleKey,
+	    @RequestParam(name = "actives", required = false) String actives) throws SearchException {
+	RuleDTO result = rulesAdapter.findRuleByKey(ruleKey);
+	log.debug("rule found: {}", result);
+	return result;
+    }
 }

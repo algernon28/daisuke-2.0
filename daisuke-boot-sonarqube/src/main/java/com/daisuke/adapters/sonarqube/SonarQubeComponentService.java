@@ -9,9 +9,7 @@ import org.sonarqube.ws.Components.Component;
 import org.sonarqube.ws.client.components.ComponentsService;
 import org.sonarqube.ws.client.components.SearchRequest;
 import org.sonarqube.ws.client.components.ShowRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.daisuke.domain.adapters.ComponentsAdapter;
 import com.daisuke.domain.adapters.SearchException;
@@ -22,7 +20,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
 @RequiredArgsConstructor
 @Data
 @Slf4j
@@ -32,11 +29,14 @@ public class SonarQubeComponentService implements ComponentsAdapter<SearchCompon
     private ComponentsService componentsService;
     private static final String COMPONENT_NOT_FOUND = "The search did not return any component";
 
-    public SonarQubeComponentService(SonarQubeClient client, ComponentMapper mapper) {
+    public SonarQubeComponentService(SonarQubeClient client) {
 	this.client = client;
 	this.componentsService = client.getComponentsService();
     }
-
+    @Autowired
+    public void setMapper(ComponentMapper mapper) {
+	this.componentMapper = mapper;
+    }
     @Override
     public List<ComponentDTO> findComponents(SearchComponent search) throws SearchException {
 	client.refreshConnection();

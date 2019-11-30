@@ -13,7 +13,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-public abstract class AbstractWireMockTest<S, M> {
+public abstract class AbstractWireMockTest<S, M> { 
     @Getter(value = AccessLevel.PROTECTED)
     private  Class<S> serviceClass;
     @Getter(value = AccessLevel.PROTECTED)
@@ -22,11 +22,11 @@ public abstract class AbstractWireMockTest<S, M> {
     protected SonarQubeClient client;
     protected S service;
     protected WireMockServer wmServer;
-    protected M mapper;
+    protected M mapper; 
 
     protected void init(Class<S> serviceClass, Class<M> mapperClass) throws Exception {
 	this.serviceClass = serviceClass;
-	this.mapperClass = mapperClass;
+	this.mapperClass = mapperClass; 
 	wmServer = new WireMockServer((options().bindAddress(UNIT_TEST_IP_ADDRESS).dynamicPort()));
 	wmServer.start();
 	SonarQubeConfiguration config = TestConfig.getConfiguration();

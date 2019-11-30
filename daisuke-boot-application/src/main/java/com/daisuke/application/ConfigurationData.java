@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Validated
+@Validated 
 @ConfigurationProperties(prefix="daisuke")
 public class ConfigurationData {
     @NotNull
