@@ -20,6 +20,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.sonarqube.ws.Rules.Rule;
 import org.sonarqube.ws.Rules.SearchResponse;
+import org.sonarqube.ws.Rules.ShowResponse;
 
 import com.daisuke.adapters.sonarqube.samples.RuleData.RuleSample;
 import com.daisuke.domain.adapters.SearchException;
@@ -123,10 +124,10 @@ class SonarQubeRulesServiceTest extends AbstractWireMockTest<SonarQubeRulesServi
 	String ruleKey = wsRule.getKey();
 	StubMapping mapping = get(urlPathEqualTo(RULESHOW_URL)).withQueryParam("key", new EqualToPattern(ruleKey))
 		.build();
-	SearchResponse response = SearchResponse.newBuilder().addRules(wsRule).setTotal(1L).build();
-	ResponseDefinitionBuilder builder = ResponseDefinitionBuilder.like(mapping.getResponse())
+	ShowResponse response = ShowResponse.newBuilder().setRule(wsRule).build();
+	ResponseDefinitionBuilder respBuilder = ResponseDefinitionBuilder.like(mapping.getResponse())
 		.withBody(response.toByteArray());
-	mapping.setResponse(builder.build());
+	mapping.setResponse(respBuilder.build());
 	wmServer.addStubMapping(mapping);
 	RuleDTO actual = service.findRuleByKey(ruleKey);
 	RuleDTO expected = mapper.toRuleDTO(wsRule);

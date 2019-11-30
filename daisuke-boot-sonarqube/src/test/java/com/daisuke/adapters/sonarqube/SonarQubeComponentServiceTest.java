@@ -3,8 +3,7 @@
  */
 package com.daisuke.adapters.sonarqube;
 
-import static com.daisuke.adapters.sonarqube.Constants.COMPONENTSEARCH_URL;
-import static com.daisuke.adapters.sonarqube.Constants.COMPONENTSHOW_URL;
+import static com.daisuke.adapters.sonarqube.Constants.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;

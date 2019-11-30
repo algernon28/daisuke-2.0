@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.daisuke.adapters.sonarqube.SearchRule;
 import com.daisuke.adapters.sonarqube.SonarQubeRulesService;
+import com.daisuke.adapters.sonarqube.config.SonarQubeConfiguration;
 import com.daisuke.domain.adapters.RulesAdapter;
 import com.daisuke.domain.adapters.SearchException;
 import com.daisuke.domain.model.RuleDTO;
@@ -81,7 +82,7 @@ public class RuleController {
 		.setTags(tags).setTemplateKey(templateKey).setTypes(types);
 	List<RuleDTO> result = rulesAdapter.findRules(search);
 	log.debug("rules found: {}", result);
-	return ResponseEntity.ok(result);
+	return ResponseEntity.ok(result                      );
     }
 
 }

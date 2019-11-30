@@ -34,7 +34,7 @@ public class SonarQubeClient {
     private MeasuresService measuresService;
 
     public SonarQubeClient(SonarQubeConfiguration config) {
-	URL url = config.getAnalysisServer().getUrl();
+	URL url = config.getAnalysisServer().getUrl(); 
 	String baseURL = url.toString();
 	String token = config.getAnalysisServer().getToken();
 	this.httpConnector = HttpConnector.newBuilder().token(token).url(baseURL).build();

@@ -67,7 +67,6 @@ public interface RuleMapper {
     @Mapping(target = "lang", source = "language")
     Rule toWsRule(RuleDTO ruleDTO);
 
-<<<<<<< HEAD
     default List<String> toTagsString(TagsOrBuilder tags) {
 	List<String> result = new ArrayList<>();
 	result.addAll(tags.getTagsList());
@@ -77,13 +76,12 @@ public interface RuleMapper {
     default Tags toTags(List<String> stringList) {
 	return Tags.newBuilder().addAllTags(stringList).build();
     }
-=======
+
     @Mapping(target = "key", source = "key")
     @Mapping(target = "actives", source = "actives")
     ShowRule toShowRule(ShowRequest wsRequest);
 
     @InheritInverseConfiguration(name = "toShowRule")
     ShowRequest toWsShowRequest(ShowRule search);
->>>>>>> refs/remotes/origin/master
 
 }

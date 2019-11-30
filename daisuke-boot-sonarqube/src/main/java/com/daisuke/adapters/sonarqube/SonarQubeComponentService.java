@@ -9,10 +9,8 @@ import org.sonarqube.ws.Components.Component;
 import org.sonarqube.ws.client.components.ComponentsService;
 import org.sonarqube.ws.client.components.SearchRequest;
 import org.sonarqube.ws.client.components.ShowRequest;
-<<<<<<< HEAD
-=======
+
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> refs/remotes/origin/master
 import org.springframework.stereotype.Service;
 
 import com.daisuke.domain.adapters.ComponentsAdapter;

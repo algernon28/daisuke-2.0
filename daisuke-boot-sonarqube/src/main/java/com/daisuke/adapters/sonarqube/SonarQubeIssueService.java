@@ -1,4 +1,4 @@
-package com.daisuke.adapters.sonarqube;
+package com.daisuke.adapters.sonarqube; 
 
 import java.util.ArrayList;
 import java.util.Arrays;

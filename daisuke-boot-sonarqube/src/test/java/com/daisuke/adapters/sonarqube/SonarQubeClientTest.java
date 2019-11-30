@@ -26,13 +26,13 @@ import org.sonarqube.ws.client.issues.IssuesService;
 import org.sonarqube.ws.client.measures.MeasuresService;
 import org.sonarqube.ws.client.rules.RulesService;
 import org.springframework.integration.util.UUIDConverter;
-
+import static com.daisuke.adapters.sonarqube.Constants.*;
 import com.daisuke.adapters.sonarqube.config.SonarQubeConfiguration;
 import com.daisuke.domain.adapters.SearchException;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
-import static com.daisuke.adapters.sonarqube.Constants.*;
+
 /**
  * @author Andrea M.
  *
