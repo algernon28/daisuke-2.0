@@ -56,7 +56,7 @@ public class SearchIssue {
      * "author=torvalds@linux-foundation.org&author=linux@fondation.org"
      */
 
-    private String author;
+    private List<String> author;
 
     /**
      * Example value: "my_project"

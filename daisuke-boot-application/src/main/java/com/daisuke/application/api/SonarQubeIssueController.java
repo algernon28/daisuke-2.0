@@ -43,7 +43,7 @@ public class SonarQubeIssueController {
 	    @RequestParam(name = "asc", required = false) String ascendingSort,
 	    @RequestParam(name = "assigned", required = false) String assigned,
 	    @RequestParam(name = "assignees", required = false) List<String> assignees,
-	    @RequestParam(name = "author", required = false) String author,
+	    @RequestParam(name = "author", required = false) List<String> author,
 	    @RequestParam(name = "componentKeys", required = false) List<String> componentKeys,
 	    @RequestParam(name = "createdAfter", required = false) String createdAfter,
 	    @RequestParam(name = "createdAt", required = false) String createdAt,

@@ -39,7 +39,7 @@ public class IssueData implements IssueEnumerations {
 	private static String randomAscendingSort = randomSonarBOOL();
 	private static String randomAssigned = randomSonarBOOL();
 	private static List<String> randomAssignees = randomStringList(2, false);
-	private static List<String> randomAuthor = randomStringList(3, true);
+	private static List<String> randomAuthors = randomStringList(1, true);
 	private static List<String> randomComponentKeys = randomStringList(2, true);
 	private static String randomCreatedAt = randomDate(2010, 2019);
 	private static int month = RandomUtils.nextInt(1, 13);
@@ -71,7 +71,7 @@ public class IssueData implements IssueEnumerations {
 	public static SearchRequest getWsSearch() {
 	    SearchRequest search = new SearchRequest().setAdditionalFields(randomAdditionalFields)
 		    .setAsc(randomAscendingSort).setAssigned(randomAssigned).setAssignees(randomAssignees)
-		    .setAuthor(randomAuthor).setComponentKeys(randomComponentKeys).setCreatedAt(randomCreatedAt)
+		    .setAuthor(randomAuthors).setComponentKeys(randomComponentKeys).setCreatedAt(randomCreatedAt)
 		    .setCreatedInLast(randomCreatedInLast).setCwe(randomCwe).setDirectories(randomDirectories)
 		    .setFacets(randomFacets).setIssues(randomIssues).setLanguages(randomLanguages)
 		    .setOnComponentOnly(randomOnComponentOnly).setOwaspTop10(randomOwaspTop10).setP(randomPage)
@@ -86,7 +86,7 @@ public class IssueData implements IssueEnumerations {
 	public static SearchIssue getSearchIssue() {
 	    SearchIssue search = new SearchIssue().setAdditionalFields(randomAdditionalFields)
 		    .setAscendingSort(randomAscendingSort).setAssigned(randomAssigned).setAssignees(randomAssignees)
-		    .setAuthor(randomAuthor).setComponentKeys(randomComponentKeys).setCreatedAt(randomCreatedAt)
+		    .setAuthor(randomAuthors).setComponentKeys(randomComponentKeys).setCreatedAt(randomCreatedAt)
 		    .setCreatedInLast(randomCreatedInLast).setCwe(randomCwe).setDirectories(randomDirectories)
 		    .setFacets(randomFacets).setIssues(randomIssues).setLanguages(randomLanguages)
 		    .setOnComponentOnly(randomOnComponentOnly).setOwaspTop10(randomOwaspTop10).setPage(randomPage)
