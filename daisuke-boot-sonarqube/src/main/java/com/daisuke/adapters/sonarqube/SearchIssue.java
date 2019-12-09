@@ -56,12 +56,22 @@ public class SearchIssue {
      * "author=torvalds@linux-foundation.org&author=linux@fondation.org"
      */
 
-    private List<String> author;
+    private String author;
 
     /**
      * Example value: "my_project"
      */
     private List<String> componentKeys;
+
+    /**
+     * Example value 2017-10-19 or 2017-10-19T13:00:00+0200
+     */
+    private String createdAfter;
+
+    /**
+     * Example value 2017-10-19 or 2017-10-19T13:00:00+0200
+     */
+    private String createdBefore;
 
     /**
      * Example value: "2017-10-19 or 2017-10-19T13:00:00+0200"

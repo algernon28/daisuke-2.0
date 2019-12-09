@@ -24,21 +24,22 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @RestController
-@RequestMapping("/report")
+@RequestMapping("/report/rules")
 @Slf4j
 public class SonarqubeRuleController {
     private RulesAdapter<SearchRule> rulesAdapter;
-   
 
     /**
-     *  Default constructor, the parameter is injected by Spring
+     * Default constructor, the parameter is injected by Spring
+     * 
      * @param rulesAdapter The Spring Service retrieving rules
      */
     public SonarqubeRuleController(RulesAdapter<SearchRule> rulesAdapter) {
+	super();
 	this.rulesAdapter = rulesAdapter;
     }
 
-    @GetMapping("/rules/search")
+    @GetMapping("/search")
     @ResponseBody
     public ResponseEntity<List<RuleDTO>> getRules(
 	    @RequestParam(name = "activation", required = false) String activation,
