@@ -27,11 +27,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.daisuke.boot.jpa</groupId>
-			<artifactId>daisuke-boot-jpa</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
 			<groupId>com.daisuke.boot.sonarqube</groupId>
 			<artifactId>daisuke-boot-sonarqube</artifactId>
 			<version>1.0</version>
@@ -42,6 +37,30 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
