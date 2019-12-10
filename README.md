@@ -3,7 +3,7 @@
 ### Brief history
 This project was born to bring together several one-shot QA Integration solutions implemented for an Enterprise Customer.   
 Those small applications were tailored on specific needs, integrating **Code Static Analysis** with **Continuous Integration**.   
-More specifically, the platform were [SonarQube](https://www.sonarqube.org)&trade; and [Jenkins](https://jenkins.io)&trade;.    
+More specifically, the platform were [SonarQube](https://www.sonarqube.org) and [Jenkins](https://jenkins.io).    
 The solution spanned between producing CSV reports on the issues of a specific project, global synthesis reports on specific classes of issues (e.g. OWASPTOP10), bulk-changes of issue status (e.g. changing all issues on a CSV list to "won't fix"), updating third-party database tables with custom reports, and so on and so forth.   
 The applications were small, but quickly growing in number as the requirements came, even if the differences were often just matter of one or two parameters in a query, therefore a new approach was in order.
 
