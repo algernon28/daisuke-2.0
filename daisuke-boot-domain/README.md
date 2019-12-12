@@ -4,6 +4,7 @@ This module contains the datamodel for the application, and the adapter interfac
 
 ### Package domain.adapters
 The assumption is that the domain is represented by these entities:
+
 *  Component: this is the core entity, a component can be a class, a code snippet, a project, or anything that can be analysed, depending on the platform.
 *   Issue: this is the class of the problem detected on the component. Typically identified by a category like "BUG" or "CODE SMELL", and a severity like "BLOCKER" or "CRITICAL". The specific category and severity classification depends on the target platform.
 *  Rule: a rule represents a condition which triggers an Issue.
