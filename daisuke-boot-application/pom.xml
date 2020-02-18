@@ -10,7 +10,7 @@
 	<groupId>com.daisuke.boot.application</groupId>
 	<artifactId>daisuke-boot-application</artifactId>
 	<version>1.0</version>
-	<name>daisuke-boot-domain</name>
+	<name>daisuke-boot-application</name>
 	<description>Daisuke Application</description>
 	<dependencies>
 		<dependency>
@@ -29,6 +29,11 @@
 		<dependency>
 			<groupId>com.daisuke.boot.sonarqube</groupId>
 			<artifactId>daisuke-boot-sonarqube</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.daisuke.boot.jpa</groupId>
+			<artifactId>daisuke-boot-jpa</artifactId>
 			<version>1.0</version>
 		</dependency>
 	</dependencies>
